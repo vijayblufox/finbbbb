@@ -37,7 +37,9 @@ export interface HistoricalPredictionRecord {
   id: string;
   symbol: string;
   name: string;
-  recommendedDate: string; // YYYY-MM-DD
+  recommendedDate: string; // Date recommendation was generated
+  executionDate?: string;   // Actionable market entry session date
+  signalDate?: string;      // Source candle date analyzed
   recommendedEntryPrice: number;
   currentPrice: number;
   targetPrice: number;

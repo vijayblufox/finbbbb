@@ -34,6 +34,8 @@ interface PredictionItem {
   symbol: string;
   name: string;
   recommendedDate: string;
+  executionDate?: string;
+  signalDate?: string;
   recommendedEntryPrice: number;
   currentPrice: number;
   targetPrice: number;
@@ -558,6 +560,17 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
                       </button>
                     </div>
 
+                    <div className="grid grid-cols-2 gap-2 text-[10px] font-mono-num bg-slate-900/60 p-2 rounded-lg border border-slate-800/80">
+                      <div>
+                        <span className="text-slate-500 font-sans block text-[9px]">Recommended</span>
+                        <span className="text-slate-300 font-semibold">{trade.recommendedDate}</span>
+                      </div>
+                      <div>
+                        <span className="text-emerald-500 font-sans block text-[9px]">Market Execution</span>
+                        <span className="text-white font-bold">{trade.executionDate || trade.recommendedDate}</span>
+                      </div>
+                    </div>
+
                     <div className="grid grid-cols-3 gap-2 font-mono-num text-xs pt-2 border-t border-slate-800/80">
                       <div>
                         <span className="text-[10px] text-slate-500 block">Entry</span>
@@ -680,7 +693,7 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
               <thead>
                 <tr className="bg-slate-950 text-slate-400 uppercase text-[10px] font-semibold border-b border-slate-800">
                   <th className="py-3 px-4">Stock</th>
-                  <th className="py-3 px-3">Entry Date</th>
+                  <th className="py-3 px-3">Rec &amp; Execution Date</th>
                   <th className="py-3 px-4">Selection Method &amp; Strategy Formula</th>
                   <th className="py-3 px-3 text-right">Entry Price</th>
                   <th className="py-3 px-3 text-right">Target Sell</th>
@@ -723,14 +736,28 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
                           </button>
                         </td>
 
-                        {/* Entry Date */}
-                        <td className="py-3 px-3 text-slate-300 text-[11px]">
-                          <div className="font-semibold text-slate-200">
-                            {trade.recommendedDate}
+                        {/* Recommended & Execution Date */}
+                        <td className="py-3 px-3 text-slate-300 text-[11px] whitespace-nowrap">
+                          {/* Recommended Date */}
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[10px] text-slate-400 font-sans">Rec:</span>
+                            <span className="font-semibold text-slate-300 font-mono-num">
+                              {trade.recommendedDate}
+                            </span>
                           </div>
+
+                          {/* Market Entry Execution Date */}
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <span className="text-[10px] text-emerald-400 font-sans font-semibold">Exec:</span>
+                            <span className="font-bold text-white font-mono-num">
+                              {trade.executionDate || trade.recommendedDate}
+                            </span>
+                          </div>
+
+                          {/* Active Status Badge */}
                           {trade.status === 'ACTIVE' && (
-                            <span className="inline-block mt-0.5 px-1.5 py-0.2 rounded text-[9px] font-semibold bg-indigo-950 border border-indigo-700/80 text-indigo-300">
-                              {trade.recommendedDate >= '2026-10-05' ? '📅 Mon 09:15 AM Open' : 'Active Session'}
+                            <span className="inline-block mt-1 px-1.5 py-0.2 rounded text-[9px] font-semibold bg-indigo-950 border border-indigo-700/80 text-indigo-300">
+                              {(trade.executionDate || trade.recommendedDate) >= '2026-10-05' ? '📅 Mon 09:15 AM Open' : '⚡ Active Session'}
                             </span>
                           )}
                         </td>

@@ -1316,11 +1316,14 @@ async function executeMarketWideSwingScan(customSymbols?: string[]) {
     const session = getNseSessionDetails();
     const entryDate = session.entryTradingDate; // Strictly Monday-Friday trading day
     const signalDate = session.signalDate;
+    const scanDate = new Date().toISOString().split('T')[0];
     const newPredictions = calls.map(c => ({
       id: `pred_${c.symbol}_${entryDate}_${Math.random().toString(36).substring(2, 6)}`,
       symbol: c.symbol,
       name: c.name,
-      recommendedDate: entryDate,
+      recommendedDate: scanDate, // Date when stock was recommended by algorithm
+      executionDate: entryDate,  // Date when trade execution can take place (NSE open)
+      signalDate: signalDate,
       recommendedEntryPrice: c.entryPrice,
       currentPrice: c.currentPrice,
       targetPrice: c.targetPrice,

@@ -343,9 +343,10 @@ export const HistoricalPredictionsView: React.FC<HistoricalPredictionsViewProps>
                             {item.name}
                           </span>
                         </div>
-                        <div className="text-[10px] text-slate-500 flex items-center gap-1 mt-0.5 font-sans">
-                          <Calendar className="w-3 h-3 text-slate-600" />
-                          <span>Recommended: {item.recommendedDate}</span>
+                        <div className="text-[10px] text-slate-400 flex items-center gap-1.5 mt-0.5 font-sans flex-wrap">
+                          <span>Rec: <strong className="text-slate-300 font-mono-num">{item.recommendedDate}</strong></span>
+                          <span>·</span>
+                          <span>Exec: <strong className="text-emerald-400 font-mono-num">{item.executionDate || item.recommendedDate}</strong></span>
                         </div>
                       </td>
 

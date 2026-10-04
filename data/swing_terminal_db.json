@@ -1,6 +1,6 @@
 {
   "version": "2.2.0",
-  "lastUpdated": "2026-10-04T02:08:23.467Z",
+  "lastUpdated": "2026-10-04T02:08:49.712Z",
   "capital": {
     "initial": 1000000,
     "availableCash": 809046
@@ -47,7 +47,7 @@
       "id": "pred_COFORGE.NS_2026-10-04_j10j",
       "symbol": "COFORGE.NS",
       "name": "Coforge Limited",
-      "recommendedDate": "2026-10-05",
+      "recommendedDate": "2026-10-04",
       "recommendedEntryPrice": 1826,
       "currentPrice": 1826,
       "targetPrice": 1982.9,
@@ -66,13 +66,15 @@
       ],
       "confidenceScore": 94,
       "status": "ACTIVE",
-      "notes": "📅 Actionable on Monday Market Open (05 Oct 2026 at 09:15 AM IST). Signal derived from Friday EOD closing candle."
+      "notes": "📅 Recommended: 04 Oct 2026 (Weekend Scan) → Execution: 05 Oct 2026 (Monday 09:15 AM IST Open).",
+      "executionDate": "2026-10-05",
+      "signalDate": "2026-10-02"
     },
     {
       "id": "pred_KOTAKBANK.NS_2026-10-04_t3ej",
       "symbol": "KOTAKBANK.NS",
       "name": "Kotak Mahindra Bank Limited",
-      "recommendedDate": "2026-10-05",
+      "recommendedDate": "2026-10-04",
       "recommendedEntryPrice": 418.35,
       "currentPrice": 418.35,
       "targetPrice": 442.01,
@@ -84,13 +86,15 @@
       "strategyTag": "BUY TODAY (Uptrend Momentum)",
       "confidenceScore": 99,
       "status": "ACTIVE",
-      "notes": "📅 Actionable on Monday Market Open (05 Oct 2026 at 09:15 AM IST). Signal derived from Friday EOD closing candle."
+      "notes": "📅 Recommended: 04 Oct 2026 (Weekend Scan) → Execution: 05 Oct 2026 (Monday 09:15 AM IST Open).",
+      "executionDate": "2026-10-05",
+      "signalDate": "2026-10-02"
     },
     {
       "id": "pred_MANKIND.NS_2026-10-04_i4do",
       "symbol": "MANKIND.NS",
       "name": "Mankind Pharma Limited",
-      "recommendedDate": "2026-10-05",
+      "recommendedDate": "2026-10-04",
       "recommendedEntryPrice": 2535,
       "currentPrice": 2535,
       "targetPrice": 2708.56,
@@ -102,13 +106,15 @@
       "strategyTag": "BUY TODAY (Uptrend Momentum)",
       "confidenceScore": 99,
       "status": "ACTIVE",
-      "notes": "📅 Actionable on Monday Market Open (05 Oct 2026 at 09:15 AM IST). Signal derived from Friday EOD closing candle."
+      "notes": "📅 Recommended: 04 Oct 2026 (Weekend Scan) → Execution: 05 Oct 2026 (Monday 09:15 AM IST Open).",
+      "executionDate": "2026-10-05",
+      "signalDate": "2026-10-02"
     },
     {
       "id": "pred_CYIENT.NS_2026-10-04_6u24",
       "symbol": "CYIENT.NS",
       "name": "Cyient Limited",
-      "recommendedDate": "2026-10-05",
+      "recommendedDate": "2026-10-04",
       "recommendedEntryPrice": 1110.2,
       "currentPrice": 1110.2,
       "targetPrice": 1226.2,
@@ -120,7 +126,9 @@
       "strategyTag": "BUY TODAY (Uptrend Momentum)",
       "confidenceScore": 99,
       "status": "ACTIVE",
-      "notes": "📅 Actionable on Monday Market Open (05 Oct 2026 at 09:15 AM IST). Signal derived from Friday EOD closing candle."
+      "notes": "📅 Recommended: 04 Oct 2026 (Weekend Scan) → Execution: 05 Oct 2026 (Monday 09:15 AM IST Open).",
+      "executionDate": "2026-10-05",
+      "signalDate": "2026-10-02"
     },
     {
       "id": "pred_KOTAKBANK.NS_2026-10-01_2uax",
@@ -142,7 +150,8 @@
       "exitPrice": 406.02,
       "exitDate": "2026-09-30",
       "resultProfitLossPercent": -2.63,
-      "isWin": false
+      "isWin": false,
+      "executionDate": "2026-10-01"
     },
     {
       "id": "pred_cyient_0924",
@@ -164,7 +173,8 @@
       "exitDate": "2026-09-30",
       "resultProfitLossPercent": 7.58,
       "isWin": true,
-      "notes": "🎯 Target Achieved: Volatility contraction breakout hit session high of ₹1138.00 on 2026-09-30."
+      "notes": "🎯 Target Achieved: Volatility contraction breakout hit session high of ₹1138.00 on 2026-09-30.",
+      "executionDate": "2026-09-24"
     },
     {
       "id": "pred_mankind_0924",
@@ -186,7 +196,8 @@
       "exitDate": "2026-09-29",
       "resultProfitLossPercent": 4.48,
       "isWin": true,
-      "notes": "🎯 Target Achieved: High of ₹2559.00 touched on 2026-09-29 exceeding Target 1."
+      "notes": "🎯 Target Achieved: High of ₹2559.00 touched on 2026-09-29 exceeding Target 1.",
+      "executionDate": "2026-09-24"
     },
     {
       "id": "pred_reliance_0925",
@@ -208,7 +219,8 @@
       "exitDate": "2026-09-29",
       "resultProfitLossPercent": -3.34,
       "isWin": false,
-      "notes": "🛑 Stop-Loss Hit: Breached SL barrier when low reached ₹1181.80 on 2026-09-29. Strict risk cut executed."
+      "notes": "🛑 Stop-Loss Hit: Breached SL barrier when low reached ₹1181.80 on 2026-09-29. Strict risk cut executed.",
+      "executionDate": "2026-09-25"
     },
     {
       "id": "pred_infy_0925",
@@ -230,10 +242,18 @@
       "exitDate": "2026-09-30",
       "resultProfitLossPercent": 2.38,
       "isWin": true,
-      "notes": "🎯 Target Achieved: Session high reached ₹1024.00 on 2026-09-30."
+      "notes": "🎯 Target Achieved: Session high reached ₹1024.00 on 2026-09-30.",
+      "executionDate": "2026-09-25"
     }
   ],
   "scanAuditHistory": [
+    {
+      "timestamp": "2026-10-04T02:08:49.712Z",
+      "scanNumberToday": 1,
+      "totalScanned": 89,
+      "callsGenerated": 0,
+      "niftyRegime": "CORRECTION"
+    },
     {
       "timestamp": "2026-10-04T02:08:23.467Z",
       "scanNumberToday": 2,

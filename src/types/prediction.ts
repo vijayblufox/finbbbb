@@ -2,7 +2,9 @@ export interface HistoricalPredictionItem {
   id: string;
   symbol: string;
   name: string;
-  recommendedDate: string;
+  recommendedDate: string; // Date signal was detected/recommended
+  executionDate?: string;   // Real market entry execution date (Mon-Fri)
+  signalDate?: string;      // Closing candle date analyzed
   recommendedEntryPrice: number;
   currentPrice: number;
   targetPrice: number;
