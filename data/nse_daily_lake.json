@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2026-10-04T00:51:27.008Z",
+  "lastUpdated": "2026-10-04T01:03:57.126Z",
   "totalStocks": 91,
   "stocks": {
     "^NSEI": {
@@ -17481,7 +17481,7 @@
       "sma200": 1358.08,
       "rsi14": 26.09,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T00:51:27.008Z",
+      "lastIngestedAt": "2026-10-04T01:03:57.126Z",
       "recentBars": [
         {
           "date": "2026-08-24",
