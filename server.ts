@@ -646,7 +646,7 @@ const handleHealthCheck = (req: Request, res: Response) => {
       database: 'connected',
       activePositionsCount: trades.filter((t: any) => t.status === 'OPEN').length,
       activePredictionsCount: predictions.filter((p: any) => p.status === 'ACTIVE').length,
-      dataLakeStocksCount: dataLake.getOverview().totalRecords,
+      dataLakeStocksCount: dataLake.getOverview().totalStocksIndexed,
       memoryUsageMB: Math.round(process.memoryUsage().rss / 1024 / 1024),
     },
     clientInfo: {

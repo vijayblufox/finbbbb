@@ -26,6 +26,7 @@ import {
   Trash2,
   Info,
   BookOpen,
+  Activity,
   X
 } from 'lucide-react';
 
