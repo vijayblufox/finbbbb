@@ -38,6 +38,7 @@ import { AiAnalysisModal } from './AiAnalysisModal';
 import { MathProofModal } from './MathProofModal';
 import { PaperTradeJournal } from './PaperTradeJournal';
 import { BacktestLabModal } from './BacktestLabModal';
+import { getNseSessionDetails } from '../utils/marketCalendar';
 import { HistoricalPredictionsView } from './HistoricalPredictionsView';
 import { TradeMathDerivation } from '../utils/indianSwingStrategies';
 
@@ -352,13 +353,15 @@ export const MarketSwingCallsView: React.FC<MarketSwingCallsViewProps> = ({
       return;
     }
 
-    const todayStr = new Date().toISOString().split('T')[0];
+    const session = getNseSessionDetails();
+    const tradeEntryDate = session.entryTradingDate; // Strictly Monday-Friday trading day
+
     const newPos: PlaygroundPosition = {
       id: `${call.symbol}_${Date.now()}`,
       symbol: call.symbol,
       name: call.name,
       side: 'BUY',
-      entryDate: todayStr,
+      entryDate: tradeEntryDate,
       entryPrice: call.entryPrice,
       quantity: qty,
       investedAmount: Math.round(totalCost),
@@ -377,14 +380,16 @@ export const MarketSwingCallsView: React.FC<MarketSwingCallsViewProps> = ({
       confidenceScore: call.confidenceScore,
       dailyHistory: [
         {
-          date: todayStr,
+          date: tradeEntryDate,
           open: call.entryPrice,
           high: call.entryPrice,
           low: call.entryPrice,
           close: call.entryPrice,
           changePercent: 0,
           cumPnLPercent: 0,
-          statusDay: 'Day 0: Trade Entered as per Recommendation',
+          statusDay: session.isWeekend
+            ? `Scheduled for Monday Open (${tradeEntryDate}, 09:15 AM IST)`
+            : 'Day 0: Trade Entered as per Recommendation',
         }
       ],
     };

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { getNseSessionDetails } from '../utils/marketCalendar';
 import {
   TrendingUp,
   TrendingDown,
@@ -266,6 +267,7 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
   const totalResolved = metrics?.resolvedPredictions || 0;
   const winPercent = metrics?.accuracy || 0;
   const lossPercent = totalResolved > 0 ? Number((100 - winPercent).toFixed(1)) : 0;
+  const sessionInfo = getNseSessionDetails();
 
   return (
     <div className="space-y-6">
@@ -274,6 +276,24 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
         <div className="fixed bottom-6 right-6 z-50 bg-slate-900 border border-emerald-500 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 text-xs font-semibold animate-in fade-in">
           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           <span>{toastMessage}</span>
+        </div>
+      )}
+
+      {/* Weekend / Market Status Notice Banner */}
+      {sessionInfo.isWeekend && (
+        <div className="p-3.5 rounded-2xl bg-amber-950/40 border border-amber-600/50 flex items-start gap-3 text-xs">
+          <Calendar className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+          <div className="space-y-0.5">
+            <div className="font-bold text-amber-300 flex items-center gap-2">
+              <span>NSE Market Closed (Weekend)</span>
+              <span className="text-[10px] bg-amber-900/80 text-amber-200 px-2 py-0.2 rounded-full border border-amber-700">
+                Actionable for Monday Open
+              </span>
+            </div>
+            <p className="text-slate-300 text-[11px] leading-relaxed">
+              Stock exchanges are closed on Saturday &amp; Sunday. All weekend strategy scans evaluate Friday’s closing candle data ({sessionInfo.signalDate}). Active recommendations are scheduled for entry on <strong>Monday ({sessionInfo.entryTradingDate}) at 09:15 AM IST</strong> market open.
+            </p>
+          </div>
         </div>
       )}
 
@@ -693,7 +713,14 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
 
                         {/* Entry Date */}
                         <td className="py-3 px-3 text-slate-300 text-[11px]">
-                          {trade.recommendedDate}
+                          <div className="font-semibold text-slate-200">
+                            {trade.recommendedDate}
+                          </div>
+                          {trade.status === 'ACTIVE' && (
+                            <span className="inline-block mt-0.5 px-1.5 py-0.2 rounded text-[9px] font-semibold bg-indigo-950 border border-indigo-700/80 text-indigo-300">
+                              {trade.recommendedDate >= '2026-10-05' ? '📅 Mon 09:15 AM Open' : 'Active Session'}
+                            </span>
+                          )}
                         </td>
 
                         {/* Method Column: Shows exact method used and button to inspect formula */}
