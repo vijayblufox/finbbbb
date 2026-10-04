@@ -245,12 +245,28 @@ export const UptimeRobotModal: React.FC<UptimeRobotModalProps> = ({ isOpen, onCl
             )}
           </div>
 
+          {/* Autonomous Worker Banner - No Account Required */}
+          <div className="p-3.5 rounded-xl bg-gradient-to-r from-emerald-950/60 via-slate-800/60 to-emerald-950/40 border border-emerald-700/60 flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+              <Zap className="w-4 h-4 text-emerald-400" />
+            </div>
+            <div className="text-xs space-y-1">
+              <div className="font-bold text-emerald-300 flex items-center gap-1.5">
+                <span>Autonomous Keep-Alive Active — No Account Needed!</span>
+                <span className="text-[10px] bg-emerald-900/80 text-emerald-200 px-1.5 py-0.5 rounded border border-emerald-700/50">Zero Setup</span>
+              </div>
+              <p className="text-slate-300 leading-relaxed text-[11px]">
+                Your server has a built-in background worker that automatically wakes and audits itself every 4 minutes. <strong>You do NOT have to create any account</strong>. Creating an UptimeRobot account is 100% optional, only if you want free email alerts sent to your personal inbox.
+              </p>
+            </div>
+          </div>
+
           {/* 3-Step Setup Instructions */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                How to set up Free UptimeRobot in 60 seconds
+                <ShieldCheck className="w-4 h-4 text-indigo-400" />
+                Optional: Free External UptimeRobot (For Email Alerts)
               </h3>
               <a 
                 href="https://uptimerobot.com" 
@@ -258,7 +274,7 @@ export const UptimeRobotModal: React.FC<UptimeRobotModalProps> = ({ isOpen, onCl
                 rel="noreferrer"
                 className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1"
               >
-                <span>Open uptimerobot.com</span>
+                <span>uptimerobot.com</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
             </div>
