@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2026-10-04T02:03:05.136Z",
+  "lastUpdated": "2026-10-04T02:08:19.163Z",
   "totalStocks": 91,
   "stocks": {
     "^NSEI": {
@@ -18,12 +18,13 @@
       "volume": 0,
       "changeToday": 0,
       "changePercentToday": 0,
-      "high52w": 24025.4,
+      "high52w": 24774.3,
       "low52w": 22217.3,
       "sma20": 23122.56,
+      "sma50": 23814.23,
       "rsi14": 50,
-      "totalDaysAccumulated": 30,
-      "lastIngestedAt": "2026-10-04T02:01:35.024Z",
+      "totalDaysAccumulated": 67,
+      "lastIngestedAt": "2026-10-04T02:08:16.883Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -95,7 +96,7 @@
           "low": 23786.8,
           "close": 23914.45,
           "volume": 318900,
-          "changePercent": 0
+          "changePercent": -0.59
         },
         {
           "date": "2026-09-03",
@@ -319,7 +320,7 @@
       "sma200": 4414.6,
       "rsi14": 33.6,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:29.197Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.276Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -615,7 +616,7 @@
       "sma200": 3641.19,
       "rsi14": 44.96,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.183Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.744Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -911,7 +912,7 @@
       "sma200": 98.82,
       "rsi14": 36.32,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.284Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.961Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -1207,7 +1208,7 @@
       "sma200": 2432.22,
       "rsi14": 21.46,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.053Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.240Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -1503,7 +1504,7 @@
       "sma200": 8419.5,
       "rsi14": 37.77,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:29.578Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.445Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -1799,7 +1800,7 @@
       "sma200": 267.57,
       "rsi14": 42.86,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.431Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.553Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -2095,7 +2096,7 @@
       "sma200": 307.22,
       "rsi14": 48.13,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.808Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.386Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -2391,7 +2392,7 @@
       "sma200": 1487.32,
       "rsi14": 35.94,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:29.650Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.422Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -2687,7 +2688,7 @@
       "sma200": 754.74,
       "rsi14": 25.29,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.777Z",
+      "lastIngestedAt": "2026-10-04T02:03:47.925Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -2983,7 +2984,7 @@
       "sma200": 798.59,
       "rsi14": 42.37,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.568Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.572Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -3279,7 +3280,7 @@
       "sma200": 3550.9,
       "rsi14": 45.04,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:29.817Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.830Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -3575,7 +3576,7 @@
       "sma200": 5019.31,
       "rsi14": 39.02,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.778Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.283Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -3871,7 +3872,7 @@
       "sma200": 323.15,
       "rsi14": 46.18,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.949Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.532Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -4167,7 +4168,7 @@
       "sma200": 12090.19,
       "rsi14": 36.8,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:30.877Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.313Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -4463,7 +4464,7 @@
       "sma200": 2840.89,
       "rsi14": 24.04,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.211Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.908Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -4759,7 +4760,7 @@
       "sma200": 1617.32,
       "rsi14": 18.23,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.322Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.801Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -5048,12 +5049,14 @@
       "volume": 0,
       "changeToday": 0,
       "changePercentToday": 0,
-      "high52w": 2559,
-      "low52w": 2222,
+      "high52w": 2642,
+      "low52w": 1909.7,
       "sma20": 2386.49,
+      "sma50": 2412.35,
+      "sma200": 2302.32,
       "rsi14": 72.56,
-      "totalDaysAccumulated": 30,
-      "lastIngestedAt": "2026-10-04T02:01:35.225Z",
+      "totalDaysAccumulated": 252,
+      "lastIngestedAt": "2026-10-04T02:08:18.573Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -5125,7 +5128,7 @@
           "low": 2341.2,
           "close": 2391.5,
           "volume": 334009,
-          "changePercent": 0
+          "changePercent": 1.49
         },
         {
           "date": "2026-09-03",
@@ -5349,7 +5352,7 @@
       "sma200": 434.3,
       "rsi14": 45.11,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.830Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.516Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -5645,7 +5648,7 @@
       "sma200": 543.74,
       "rsi14": 42.85,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.001Z",
+      "lastIngestedAt": "2026-10-04T02:03:47.214Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -5941,7 +5944,7 @@
       "sma200": 1141.46,
       "rsi14": 50,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.753Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.617Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -6237,7 +6240,7 @@
       "sma200": 4844.49,
       "rsi14": 45.47,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.984Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.677Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -6533,7 +6536,7 @@
       "sma200": 1320.32,
       "rsi14": 31.04,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.624Z",
+      "lastIngestedAt": "2026-10-04T02:08:19.075Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -6829,7 +6832,7 @@
       "sma200": 617.42,
       "rsi14": 54.19,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.690Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.701Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -7125,7 +7128,7 @@
       "sma200": 288.29,
       "rsi14": 24.73,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.312Z",
+      "lastIngestedAt": "2026-10-04T02:03:47.946Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -7421,7 +7424,7 @@
       "sma200": 3328.48,
       "rsi14": 29.65,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.603Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.253Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -7717,7 +7720,7 @@
       "sma200": 3806.62,
       "rsi14": 27.52,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.364Z",
+      "lastIngestedAt": "2026-10-04T02:08:19.147Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -8013,7 +8016,7 @@
       "sma200": 860.67,
       "rsi14": 41.39,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.598Z",
+      "lastIngestedAt": "2026-10-04T02:08:19.130Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -8309,7 +8312,7 @@
       "sma200": 1247.07,
       "rsi14": 59.94,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.084Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.950Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -8605,7 +8608,7 @@
       "sma200": 2848.12,
       "rsi14": 47.67,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.759Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.431Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -8894,12 +8897,14 @@
       "volume": 0,
       "changeToday": 0,
       "changePercentToday": 0,
-      "high52w": 2363.9,
-      "low52w": 2032.4,
+      "high52w": 3350,
+      "low52w": 1976.8,
       "sma20": 2143.5,
+      "sma50": 2272.01,
+      "sma200": 2493.45,
       "rsi14": 32.59,
-      "totalDaysAccumulated": 30,
-      "lastIngestedAt": "2026-10-04T02:01:35.086Z",
+      "totalDaysAccumulated": 252,
+      "lastIngestedAt": "2026-10-04T02:08:18.237Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -8971,7 +8976,7 @@
           "low": 2303.5,
           "close": 2348,
           "volume": 2533005,
-          "changePercent": 0
+          "changePercent": -0.89
         },
         {
           "date": "2026-09-03",
@@ -9195,7 +9200,7 @@
       "sma200": 256.91,
       "rsi14": 34.11,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.555Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.804Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -9491,7 +9496,7 @@
       "sma200": 1516.91,
       "rsi14": 47.92,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.967Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.763Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -9787,7 +9792,7 @@
       "sma200": 1633.09,
       "rsi14": 33.1,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.417Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.889Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -10083,7 +10088,7 @@
       "sma200": 4255.04,
       "rsi14": 22.41,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.804Z",
+      "lastIngestedAt": "2026-10-04T02:08:19.163Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -10372,12 +10377,14 @@
       "volume": 0,
       "changeToday": 5.6,
       "changePercentToday": 0.51,
-      "high52w": 1150,
-      "low52w": 1030.3,
+      "high52w": 1222,
+      "low52w": 750.3,
       "sma20": 1077.51,
+      "sma50": 991.25,
+      "sma200": 959.73,
       "rsi14": 60.33,
-      "totalDaysAccumulated": 30,
-      "lastIngestedAt": "2026-10-04T02:01:35.374Z",
+      "totalDaysAccumulated": 252,
+      "lastIngestedAt": "2026-10-04T02:08:17.773Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -10449,7 +10456,7 @@
           "low": 1114.5,
           "close": 1122.2,
           "volume": 820374,
-          "changePercent": 0
+          "changePercent": -3.64
         },
         {
           "date": "2026-09-03",
@@ -10673,7 +10680,7 @@
       "sma200": 4456.56,
       "rsi14": 38.38,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:30.105Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.515Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -10969,7 +10976,7 @@
       "sma200": 358.44,
       "rsi14": 25.79,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.086Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.682Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -11265,7 +11272,7 @@
       "sma200": 346.29,
       "rsi14": 35.31,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.157Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.785Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -11561,7 +11568,7 @@
       "sma200": 49.12,
       "rsi14": 16.21,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.892Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.975Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -11857,7 +11864,7 @@
       "sma200": 13890.1,
       "rsi14": 23.89,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.158Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.943Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -12153,7 +12160,7 @@
       "sma200": 376.93,
       "rsi14": 47.64,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.580Z",
+      "lastIngestedAt": "2026-10-04T02:03:48.692Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -12449,7 +12456,7 @@
       "sma200": 3524.39,
       "rsi14": 40.57,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.913Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.371Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -12745,7 +12752,7 @@
       "sma200": 1503.81,
       "rsi14": 34.18,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.004Z",
+      "lastIngestedAt": "2026-10-04T02:08:19.092Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -13041,7 +13048,7 @@
       "sma200": 1830.41,
       "rsi14": 25.18,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.459Z",
+      "lastIngestedAt": "2026-10-04T02:03:48.380Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -13337,7 +13344,7 @@
       "sma200": 199.86,
       "rsi14": 32.42,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.817Z",
+      "lastIngestedAt": "2026-10-04T02:03:49.372Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -13633,7 +13640,7 @@
       "sma200": 7086.64,
       "rsi14": 46.85,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:29.773Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.864Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -13929,7 +13936,7 @@
       "sma200": 1343.5,
       "rsi14": 59.1,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:30.282Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.883Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -14225,7 +14232,7 @@
       "sma200": 1809.07,
       "rsi14": 42.57,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.932Z",
+      "lastIngestedAt": "2026-10-04T02:03:48.230Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -14521,7 +14528,7 @@
       "sma200": 194.58,
       "rsi14": 42.45,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.513Z",
+      "lastIngestedAt": "2026-10-04T02:03:49.456Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -14817,7 +14824,7 @@
       "sma200": 4418.88,
       "rsi14": 24.33,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.724Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.925Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -15113,7 +15120,7 @@
       "sma200": 1285.17,
       "rsi14": 42.92,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:30.189Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.119Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -15409,7 +15416,7 @@
       "sma200": 1634.21,
       "rsi14": 47.02,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:29.889Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.171Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -15705,7 +15712,7 @@
       "sma200": 7412.48,
       "rsi14": 15.3,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.116Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.924Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -16001,7 +16008,7 @@
       "sma200": 1378.05,
       "rsi14": 42.28,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:29.959Z",
+      "lastIngestedAt": "2026-10-04T02:03:48.162Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -16297,7 +16304,7 @@
       "sma200": 5348.35,
       "rsi14": 42.2,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.663Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.713Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -16593,7 +16600,7 @@
       "sma200": 284.41,
       "rsi14": 33.56,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.394Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.625Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -16889,7 +16896,7 @@
       "sma200": 5324.91,
       "rsi14": 47.14,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.180Z",
+      "lastIngestedAt": "2026-10-04T02:03:48.573Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -17185,7 +17192,7 @@
       "sma200": 1881.1,
       "rsi14": 19.03,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.571Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.205Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -17481,7 +17488,7 @@
       "sma200": 1358.08,
       "rsi14": 26.09,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:03:05.136Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.087Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -17777,7 +17784,7 @@
       "sma200": 6596.63,
       "rsi14": 37.13,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.711Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.906Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -18073,7 +18080,7 @@
       "sma200": 2260.08,
       "rsi14": 38.44,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.606Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.345Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -18362,12 +18369,14 @@
       "volume": 0,
       "changeToday": 0,
       "changePercentToday": 0,
-      "high52w": 749.3,
+      "high52w": 1020.5,
       "low52w": 681.9,
       "sma20": 718.28,
+      "sma50": 724.13,
+      "sma200": 810.58,
       "rsi14": 55.77,
-      "totalDaysAccumulated": 30,
-      "lastIngestedAt": "2026-10-04T02:01:35.083Z",
+      "totalDaysAccumulated": 252,
+      "lastIngestedAt": "2026-10-04T02:08:18.871Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -18439,7 +18448,7 @@
           "low": 700,
           "close": 700.8,
           "volume": 36950338,
-          "changePercent": 0
+          "changePercent": -1.56
         },
         {
           "date": "2026-09-03",
@@ -18656,12 +18665,14 @@
       "volume": 0,
       "changeToday": 0,
       "changePercentToday": 0,
-      "high52w": 271.05,
+      "high52w": 426.4,
       "low52w": 254.65,
       "sma20": 263.11,
+      "sma50": 270.55,
+      "sma200": 300.9,
       "rsi14": 45.12,
-      "totalDaysAccumulated": 30,
-      "lastIngestedAt": "2026-10-04T02:01:35.089Z",
+      "totalDaysAccumulated": 252,
+      "lastIngestedAt": "2026-10-04T02:08:18.058Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -18733,7 +18744,7 @@
           "low": 262.8,
           "close": 266.3,
           "volume": 14643482,
-          "changePercent": 0
+          "changePercent": -0.11
         },
         {
           "date": "2026-09-03",
@@ -18957,7 +18968,7 @@
       "sma200": 3574.81,
       "rsi14": 50.91,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.362Z",
+      "lastIngestedAt": "2026-10-04T02:08:19.054Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -19253,7 +19264,7 @@
       "sma200": 925.23,
       "rsi14": 25.49,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.871Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.188Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -19549,7 +19560,7 @@
       "sma200": 2181.1,
       "rsi14": 33.32,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:30.674Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.313Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -19845,7 +19856,7 @@
       "sma200": 418.35,
       "rsi14": 33.77,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:30.487Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.592Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -20141,7 +20152,7 @@
       "sma200": 136.66,
       "rsi14": 40.24,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.477Z",
+      "lastIngestedAt": "2026-10-04T02:03:48.532Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -20437,7 +20448,7 @@
       "sma200": 626.76,
       "rsi14": 54.3,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.461Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.743Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -20733,7 +20744,7 @@
       "sma200": 1315.82,
       "rsi14": 31.46,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.319Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.404Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -21029,7 +21040,7 @@
       "sma200": 703.74,
       "rsi14": 49.43,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.065Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.221Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -21325,7 +21336,7 @@
       "sma200": 982.87,
       "rsi14": 37.37,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.375Z",
+      "lastIngestedAt": "2026-10-04T02:03:49.279Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -21621,7 +21632,7 @@
       "sma200": 349.39,
       "rsi14": 44.68,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.881Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.725Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -21917,7 +21928,7 @@
       "sma200": 976.08,
       "rsi14": 32.96,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.486Z",
+      "lastIngestedAt": "2026-10-04T02:03:49.490Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -22213,7 +22224,7 @@
       "sma200": 3966.69,
       "rsi14": 30.74,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.134Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.268Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -22509,7 +22520,7 @@
       "sma200": 1042.17,
       "rsi14": 34.24,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.250Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.554Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -22805,7 +22816,7 @@
       "sma200": 1687.01,
       "rsi14": 51.7,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:29.796Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.404Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -23101,7 +23112,7 @@
       "sma200": 2583.06,
       "rsi14": 34.87,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:32.046Z",
+      "lastIngestedAt": "2026-10-04T02:08:17.991Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -23397,7 +23408,7 @@
       "sma200": 1866.44,
       "rsi14": 40.06,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:30.055Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.848Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -23693,7 +23704,7 @@
       "sma200": 8052.62,
       "rsi14": 28.92,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.157Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.598Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -23987,7 +23998,7 @@
       "sma20": 413.73,
       "rsi14": 49.39,
       "totalDaysAccumulated": 30,
-      "lastIngestedAt": "2026-10-04T02:01:35.099Z",
+      "lastIngestedAt": "2026-10-04T02:08:16.741Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -24281,7 +24292,7 @@
       "sma20": 1037.46,
       "rsi14": 49.3,
       "totalDaysAccumulated": 30,
-      "lastIngestedAt": "2026-10-04T02:01:35.097Z",
+      "lastIngestedAt": "2026-10-04T02:03:51.438Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -24577,7 +24588,7 @@
       "sma200": 305.12,
       "rsi14": 19.06,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.798Z",
+      "lastIngestedAt": "2026-10-04T02:03:48.675Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -24873,7 +24884,7 @@
       "sma200": 1353.01,
       "rsi14": 28.19,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:30.377Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.025Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -25169,7 +25180,7 @@
       "sma200": 1239.64,
       "rsi14": 42.4,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.865Z",
+      "lastIngestedAt": "2026-10-04T02:03:48.798Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -25465,7 +25476,7 @@
       "sma200": 2770.38,
       "rsi14": 45.66,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.399Z",
+      "lastIngestedAt": "2026-10-04T02:03:47.676Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -25761,7 +25772,7 @@
       "sma200": 3267.28,
       "rsi14": 22.95,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:31.706Z",
+      "lastIngestedAt": "2026-10-04T02:08:19.115Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -26055,7 +26066,7 @@
       "sma20": 1814.89,
       "rsi14": 47.33,
       "totalDaysAccumulated": 30,
-      "lastIngestedAt": "2026-10-04T02:01:34.948Z",
+      "lastIngestedAt": "2026-10-04T02:08:16.503Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -26351,7 +26362,7 @@
       "sma200": 386.43,
       "rsi14": 36.91,
       "totalDaysAccumulated": 252,
-      "lastIngestedAt": "2026-10-04T02:01:33.205Z",
+      "lastIngestedAt": "2026-10-04T02:08:18.457Z",
       "recentBars": [
         {
           "date": "2026-08-24",
@@ -26645,7 +26656,7 @@
       "sma20": 55735.62,
       "rsi14": 50,
       "totalDaysAccumulated": 23,
-      "lastIngestedAt": "2026-10-04T02:01:35.080Z",
+      "lastIngestedAt": "2026-10-04T02:03:51.442Z",
       "recentBars": [
         {
           "date": "2026-09-02",

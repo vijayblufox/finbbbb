@@ -53,8 +53,20 @@ export const HistoricalPredictionsView: React.FC<HistoricalPredictionsViewProps>
     fetchTrackRecord();
   }, []);
 
+  // Deduplicate active predictions strictly by symbol (1 trade per stock window)
+  const deduplicatedPredictions = React.useMemo(() => {
+    const seenActive = new Set<string>();
+    return predictions.filter(p => {
+      if (p.status === 'ACTIVE') {
+        if (seenActive.has(p.symbol)) return false;
+        seenActive.add(p.symbol);
+      }
+      return true;
+    });
+  }, [predictions]);
+
   // Filtered list
-  const filteredPredictions = predictions.filter(item => {
+  const filteredPredictions = deduplicatedPredictions.filter(item => {
     if (activeFilter === 'WINS' && (!item.isWin || item.status === 'ACTIVE')) return false;
     if (activeFilter === 'LOSSES' && (item.isWin || item.status === 'ACTIVE')) return false;
     if (activeFilter === 'ACTIVE' && item.status !== 'ACTIVE') return false;

@@ -221,9 +221,21 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
     }
   };
 
+  // Strict Deduplication Rule: Exactly ONE active position per stock symbol across the whole ledger
+  const deduplicatedPredictions = useMemo(() => {
+    const seenActive = new Set<string>();
+    return predictions.filter(p => {
+      if (p.status === 'ACTIVE') {
+        if (seenActive.has(p.symbol)) return false;
+        seenActive.add(p.symbol);
+      }
+      return true;
+    });
+  }, [predictions]);
+
   // Filtered trades list
   const filteredPredictions = useMemo(() => {
-    return predictions.filter(p => {
+    return deduplicatedPredictions.filter(p => {
       if (statusFilter === 'ACTIVE' && p.status !== 'ACTIVE') return false;
       if (statusFilter === 'WINS' && (!p.isWin || p.status === 'ACTIVE')) return false;
       if (statusFilter === 'LOSSES' && (p.isWin || p.status === 'ACTIVE')) return false;
@@ -238,12 +250,12 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
       }
       return true;
     });
-  }, [predictions, statusFilter, searchQuery]);
+  }, [deduplicatedPredictions, statusFilter, searchQuery]);
 
   // Today's Suggestions (Active trades recommended in latest sessions)
   const todaySuggestions = useMemo(() => {
-    return predictions.filter(p => p.status === 'ACTIVE');
-  }, [predictions]);
+    return deduplicatedPredictions.filter(p => p.status === 'ACTIVE');
+  }, [deduplicatedPredictions]);
 
   // Strategy Comparison List
   const strategyList = useMemo(() => {

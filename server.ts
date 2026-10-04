@@ -1124,6 +1124,16 @@ async function executeMarketWideSwingScan(customSymbols?: string[]) {
   const validDatasets = datasets.filter(Boolean);
   const calls: any[] = [];
 
+  // Active Swing Trade Holding Window: Track stocks currently in an OPEN active trade
+  // A stock can ONLY be recommended once while its trade is running. No duplicates allowed!
+  const allDbPredictions = db.getPredictions();
+  const activePredictionsMap = new Map<string, any>();
+  for (const p of allDbPredictions) {
+    if (p.status === 'ACTIVE') {
+      activePredictionsMap.set(p.symbol, p);
+    }
+  }
+
   for (const d of validDatasets) {
     if (!d || !d.bars || d.bars.length < 30) continue;
     const bars = d.bars;
@@ -1248,6 +1258,16 @@ async function executeMarketWideSwingScan(customSymbols?: string[]) {
 
     // Strict filter: minimum score 80, positive R:R, strictly not falling, above 200 SMA
     if (score >= 80 && riskRewardRatio >= 1.4 && currentPrice > sma200 && ret5d > 0) {
+      // Strict Swing Holding Lock: If a stock is ALREADY an open active swing trade awaiting target/stop,
+      // it MUST NOT be re-recommended or duplicated until that trade is formally closed.
+      if (activePredictionsMap.has(d.meta.symbol)) {
+        const activeTrade = activePredictionsMap.get(d.meta.symbol);
+        if (activeTrade) {
+          db.updatePrediction(activeTrade.id, { currentPrice });
+        }
+        continue; // Skip creating a duplicate recommendation
+      }
+
       calls.push({
         symbol: d.meta.symbol,
         name: d.meta.name,

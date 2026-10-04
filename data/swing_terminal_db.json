@@ -1,6 +1,6 @@
 {
   "version": "2.2.0",
-  "lastUpdated": "2026-10-04T02:01:34.037Z",
+  "lastUpdated": "2026-10-04T02:08:23.467Z",
   "capital": {
     "initial": 1000000,
     "availableCash": 809046
@@ -234,6 +234,34 @@
     }
   ],
   "scanAuditHistory": [
+    {
+      "timestamp": "2026-10-04T02:08:23.467Z",
+      "scanNumberToday": 2,
+      "totalScanned": 89,
+      "callsGenerated": 0,
+      "niftyRegime": "CORRECTION"
+    },
+    {
+      "timestamp": "2026-10-04T02:08:20.687Z",
+      "scanNumberToday": 1,
+      "totalScanned": 89,
+      "callsGenerated": 0,
+      "niftyRegime": "CORRECTION"
+    },
+    {
+      "timestamp": "2026-10-04T02:03:50.672Z",
+      "scanNumberToday": 1,
+      "totalScanned": 89,
+      "callsGenerated": 4,
+      "niftyRegime": "CORRECTION"
+    },
+    {
+      "timestamp": "2026-10-04T02:03:39.351Z",
+      "scanNumberToday": 1,
+      "totalScanned": 89,
+      "callsGenerated": 4,
+      "niftyRegime": "CORRECTION"
+    },
     {
       "timestamp": "2026-10-04T02:01:34.037Z",
       "scanNumberToday": 1,
