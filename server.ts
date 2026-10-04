@@ -440,6 +440,46 @@ function formatUptime(seconds: number): string {
   return parts.join(' ');
 }
 
+// Background auto-auditor: runs on heartbeats to verify live target/SL hits
+async function auditActivePredictionsBackground() {
+  try {
+    const predictions = db.getPredictions();
+    const active = predictions.filter(p => p.status === 'ACTIVE');
+    if (active.length === 0) return;
+
+    for (const pred of active) {
+      try {
+        const norm = normalizeSymbol(pred.symbol);
+        const stockData = await fetchYahooData(norm, '5d', '1d');
+        if (stockData && stockData.bars && stockData.bars.length > 0) {
+          const relevantBars = stockData.bars.filter((b: any) => b.date >= pred.recommendedDate);
+          for (const bar of relevantBars) {
+            if (bar.high >= pred.targetPrice || bar.close >= pred.targetPrice) {
+              pred.status = 'TARGET_HIT';
+              pred.exitPrice = pred.targetPrice;
+              pred.exitDate = bar.date;
+              pred.resultProfitLossPercent = pred.targetPercent;
+              pred.isWin = true;
+              pred.notes = `🎯 Target Achieved: High reached ₹${bar.high.toFixed(2)} on ${bar.date} vs Target ₹${pred.targetPrice.toFixed(2)}`;
+              db.updatePrediction(pred.id, pred);
+              break;
+            } else if (bar.low <= pred.stopLossPrice || bar.close <= pred.stopLossPrice) {
+              pred.status = 'STOP_LOSS_HIT';
+              pred.exitPrice = pred.stopLossPrice;
+              pred.exitDate = bar.date;
+              pred.resultProfitLossPercent = -pred.stopLossPercent;
+              pred.isWin = false;
+              pred.notes = `🛑 Stop-Loss Breached: Low reached ₹${bar.low.toFixed(2)} on ${bar.date} vs SL ₹${pred.stopLossPrice.toFixed(2)}`;
+              db.updatePrediction(pred.id, pred);
+              break;
+            }
+          }
+        }
+      } catch (_) {}
+    }
+  } catch (_) {}
+}
+
 // Handler for UptimeRobot Health / Heartbeat ping
 const handleHealthCheck = (req: Request, res: Response) => {
   const start = Date.now();
@@ -467,6 +507,11 @@ const handleHealthCheck = (req: Request, res: Response) => {
   const uptimeSec = Math.floor((Date.now() - serverStartTime) / 1000);
   const trades = db.getState()?.trades || [];
   const predictions = db.getState()?.predictions || [];
+
+  // Trigger background market audit of open trades on every heartbeat ping
+  setTimeout(() => {
+    auditActivePredictionsBackground();
+  }, 10);
 
   res.status(200).json({
     status: 'healthy',
