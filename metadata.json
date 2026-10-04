@@ -1,0 +1,6 @@
+{
+  "name": "NSE 1-Year Stock Market Terminal & Daily Data Explorer",
+  "description": "Comprehensive 1-year daily historical OHLCV data, interactive technical charts, metrics, and Python yfinance analytics for NSE India stocks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
