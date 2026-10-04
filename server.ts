@@ -547,6 +547,24 @@ async function auditActivePredictionsBackground() {
           for (const bar of relevantBars) {
             const exitTime = bar.date === istNow.dateStr ? istNow.timeStr : '02:45 PM IST';
             const exitTimestamp = `${bar.date} at ${exitTime}`;
+            const entryPrice = pred.recommendedEntryPrice;
+            const breakEvenThreshold = Number((entryPrice * 1.04).toFixed(2));
+            pred.quantity = 1; // Standardized 1 share test quantity
+            pred.trailingStopTriggerPercent = 4.0;
+
+            // Check if +4% was reached to activate Trailing Stop to Break-Even
+            if (!pred.isTrailingStopActivated && bar.high >= breakEvenThreshold) {
+              pred.isTrailingStopActivated = true;
+              pred.trailingStopPrice = entryPrice;
+              pred.executionLogs = pred.executionLogs || [];
+              pred.executionLogs.push({
+                timestamp: exitTimestamp,
+                action: 'TRAILING_STOP_ACTIVATED',
+                price: entryPrice,
+                message: `🛡️ Dynamic Trailing Stop Activated: High reached ₹${bar.high.toFixed(2)} (>= +4.0% gain). Stop-loss raised to Cost / Entry Price ₹${entryPrice.toFixed(2)} (100% Risk-Free Trade).`,
+              });
+              db.updatePrediction(pred.id, pred);
+            }
 
             if (bar.high >= pred.targetPrice || bar.close >= pred.targetPrice) {
               pred.status = 'TARGET_HIT';
@@ -557,6 +575,7 @@ async function auditActivePredictionsBackground() {
               pred.sellExecutionTimestamp = exitTimestamp;
               pred.executionStatus = 'SELL_TARGET_EXECUTED';
               pred.resultProfitLossPercent = pred.targetPercent;
+              pred.profitRupees = Number(((pred.targetPrice - entryPrice) * 1).toFixed(2));
               pred.isWin = true;
               pred.notes = `🎯 Target Achieved: High reached ₹${bar.high.toFixed(2)} on ${bar.date} at ${exitTime} vs Target ₹${pred.targetPrice.toFixed(2)}`;
               
@@ -565,7 +584,31 @@ async function auditActivePredictionsBackground() {
                 timestamp: exitTimestamp,
                 action: 'TARGET_HIT',
                 price: pred.targetPrice,
-                message: `🎯 Target Achieved (+${pred.targetPercent}%). Auto SELL Executed at ₹${pred.targetPrice.toFixed(2)}. Profit locked.`,
+                message: `🎯 Target Achieved (+${pred.targetPercent}%). Auto SELL 1 Share at ₹${pred.targetPrice.toFixed(2)}. Realized P&L: +₹${pred.profitRupees}. Result: WIN (True).`,
+              });
+
+              db.updatePrediction(pred.id, pred);
+              break;
+            } else if (pred.isTrailingStopActivated && bar.low <= entryPrice) {
+              // Protected Break-Even Exit
+              pred.status = 'TIME_LIMIT_EXIT' as any;
+              pred.exitPrice = entryPrice;
+              pred.exitDate = bar.date;
+              pred.exitTime = exitTime;
+              pred.exitTimestamp = exitTimestamp;
+              pred.sellExecutionTimestamp = exitTimestamp;
+              pred.executionStatus = 'SELL_TIME_LIMIT';
+              pred.resultProfitLossPercent = 0.00;
+              pred.profitRupees = 0.00;
+              pred.isWin = true;
+              pred.notes = `🛡️ Break-Even Stop Hit: After touching +4.0% gain, pulled back to cost ₹${entryPrice.toFixed(2)}. Exited with 0.00% loss (Capital Protected).`;
+
+              pred.executionLogs = pred.executionLogs || [];
+              pred.executionLogs.push({
+                timestamp: exitTimestamp,
+                action: 'BREAK_EVEN_EXIT',
+                price: entryPrice,
+                message: `🛡️ Break-Even Stop Executed at ₹${entryPrice.toFixed(2)} (0.00%). Capital protected after +4% gain. Result: WIN (True).`,
               });
 
               db.updatePrediction(pred.id, pred);
@@ -579,6 +622,7 @@ async function auditActivePredictionsBackground() {
               pred.sellExecutionTimestamp = exitTimestamp;
               pred.executionStatus = 'SELL_STOP_EXECUTED';
               pred.resultProfitLossPercent = -pred.stopLossPercent;
+              pred.profitRupees = Number(((pred.stopLossPrice - entryPrice) * 1).toFixed(2));
               pred.isWin = false;
               pred.notes = `🛑 Stop-Loss Breached: Low reached ₹${bar.low.toFixed(2)} on ${bar.date} at ${exitTime} vs SL ₹${pred.stopLossPrice.toFixed(2)}`;
               
@@ -587,7 +631,7 @@ async function auditActivePredictionsBackground() {
                 timestamp: exitTimestamp,
                 action: 'STOP_LOSS_HIT',
                 price: pred.stopLossPrice,
-                message: `🛑 Stop-Loss Breached (-${pred.stopLossPercent}%). Auto SELL Executed at ₹${pred.stopLossPrice.toFixed(2)}. Capital protected.`,
+                message: `🛑 Stop-Loss Breached (-${pred.stopLossPercent}%). Auto SELL 1 Share at ₹${pred.stopLossPrice.toFixed(2)}. Realized P&L: ₹${pred.profitRupees}. Result: LOSS (False).`,
               });
 
               db.updatePrediction(pred.id, pred);
@@ -1189,6 +1233,25 @@ async function executeMarketWideSwingScan(customSymbols?: string[]) {
     }
   }
 
+  // Sector Trend & Distribution Filter:
+  // "If IT sector is falling on a particular day, the trade should not be recommended for that day"
+  const sectorPerformanceMap = new Map<string, { total: number; declining: number; avgChange: number; totalChange: number }>();
+  for (const d of validDatasets) {
+    if (!d || !d.meta) continue;
+    const sector = d.meta.sector || 'General';
+    if (!sectorPerformanceMap.has(sector)) {
+      sectorPerformanceMap.set(sector, { total: 0, declining: 0, avgChange: 0, totalChange: 0 });
+    }
+    const stat = sectorPerformanceMap.get(sector)!;
+    stat.total++;
+    const chg = d.meta.changePercentToday || 0;
+    stat.totalChange += chg;
+    if (chg < 0) stat.declining++;
+  }
+  for (const [_sector, stat] of sectorPerformanceMap.entries()) {
+    stat.avgChange = stat.total > 0 ? Number((stat.totalChange / stat.total).toFixed(2)) : 0;
+  }
+
   for (const d of validDatasets) {
     if (!d || !d.bars || d.bars.length < 30) continue;
     const bars = d.bars;
@@ -1198,6 +1261,18 @@ async function executeMarketWideSwingScan(customSymbols?: string[]) {
     const prev10 = bars[bars.length - 11] || bars[0];
     const prev20 = bars[bars.length - 21] || bars[0];
     const currentPrice = latest.close;
+
+    // SECTOR TIDE CRITERIA:
+    // If the stock's sector is falling today (average return < -0.3% OR >60% of stocks in that sector are red),
+    // skip recommending buys in this sector to protect against sector-wide distribution.
+    const sector = d.meta?.sector;
+    const sectorStat = sector ? sectorPerformanceMap.get(sector) : null;
+    if (sectorStat && sectorStat.total >= 3) {
+      const isSectorFalling = sectorStat.avgChange < -0.3 || (sectorStat.declining / sectorStat.total) > 0.60;
+      if (isSectorFalling) {
+        continue; // Never swim against a falling sector tide
+      }
+    }
 
     const closes = bars.map((b: any) => b.close);
     const sma200 = closes.slice(-200).reduce((a: number, b: number) => a + b, 0) / Math.min(closes.length, 200);
@@ -1381,15 +1456,15 @@ async function executeMarketWideSwingScan(customSymbols?: string[]) {
           timestamp: istNow.fullTimestamp,
           action: 'RECOMMENDED' as const,
           price: c.entryPrice,
-          message: `Algorithm detected setup '${c.action}' with ${c.confidenceScore}% confidence. Target ₹${c.targetPrice.toFixed(2)} (+${c.targetPercent}%), Stop ₹${c.stopLossPrice.toFixed(2)} (-${c.stopLossPercent}%).`,
+          message: `Algorithm detected setup '${c.action}' with ${c.confidenceScore}% confidence. Target ₹${c.targetPrice.toFixed(2)} (+${c.targetPercent}%), Stop ₹${c.stopLossPrice.toFixed(2)} (-${c.stopLossPercent}%). Trailing Stop: Break-Even at +4% gain. Position: 1 Share (Standardized Test Unit).`,
         },
         {
           timestamp: isMarketOpenNow ? istNow.fullTimestamp : scheduledBuyTimestamp,
           action: isMarketOpenNow ? ('BUY_EXECUTED' as const) : ('BUY_SCHEDULED' as const),
           price: c.entryPrice,
           message: isMarketOpenNow
-            ? `🟢 BUY Order Filled Live @ ₹${c.entryPrice.toFixed(2)}. Position active in portfolio.`
-            : `📅 BUY Order Scheduled for Market Open on ${entryDate} at 09:15 AM IST @ Entry ₹${c.entryPrice.toFixed(2)}.`,
+            ? `🟢 BUY 1 Share Filled Live @ ₹${c.entryPrice.toFixed(2)}. Outcome tracked: True (Win) or False (Loss).`
+            : `📅 BUY 1 Share Scheduled for Market Open on ${entryDate} at 09:15 AM IST @ Entry ₹${c.entryPrice.toFixed(2)}.`,
         }
       ];
 
@@ -1397,6 +1472,7 @@ async function executeMarketWideSwingScan(customSymbols?: string[]) {
         id: `pred_${c.symbol}_${entryDate}_${Math.random().toString(36).substring(2, 6)}`,
         symbol: c.symbol,
         name: c.name,
+        quantity: 1, // Standardized 1 share test quantity
         recommendedDate: istNow.dateStr,
         recommendedTime: istNow.timeStr,
         recommendedTimestamp: istNow.fullTimestamp,
@@ -1413,6 +1489,9 @@ async function executeMarketWideSwingScan(customSymbols?: string[]) {
         target2Price: c.target2Price,
         stopLossPrice: c.stopLossPrice,
         stopLossPercent: c.stopLossPercent,
+        trailingStopTriggerPercent: 4.0,
+        trailingStopPrice: c.entryPrice,
+        isTrailingStopActivated: false,
         holdingHorizon: c.holdingHorizon,
         strategyTag: c.action,
         selectionMethod: c.strategiesMet && c.strategiesMet.length > 0 ? c.strategiesMet[0] : (c.action || 'Mark Minervini VCP Breakout'),
@@ -1424,6 +1503,8 @@ async function executeMarketWideSwingScan(customSymbols?: string[]) {
             : 'Stage 2 Momentum Breakout: Close > 20 EMA > 50 EMA > 200 EMA with positive Nifty Relative Strength',
           `Target derived at +${c.targetPercent}% enforcing strict 1:2 risk-to-reward ratio`,
           `Stop-loss strictly pegged at previous structural swing low (-${c.stopLossPercent}%)`,
+          'Dynamic Trailing Stop: Stop-loss automatically moves to Entry Price at +4% gain (100% Risk-Free)',
+          'Position Size: Standardized to 1 Share for authentic prediction accuracy tracking',
           `Holding horizon bounded at ${c.holdingHorizon || '3 to 5 Days'} to enforce swing velocity`,
         ],
         confidenceScore: c.confidenceScore,
@@ -1530,9 +1611,28 @@ app.get('/api/predictions/track-record', async (_req: Request, res: Response) =>
 
             // Check every trading bar since the entry execution date in chronological sequence
             const relevantBars = stockData.bars.filter((b: any) => b.date >= (pred.executionDate || pred.recommendedDate));
+            const entryPrice = pred.recommendedEntryPrice;
+            const breakEvenThreshold = Number((entryPrice * 1.04).toFixed(2));
+            pred.quantity = 1; // Standardized 1 share test quantity
+            pred.trailingStopTriggerPercent = 4.0;
+
             for (const bar of relevantBars) {
               const exitTime = bar.date === istNow.dateStr ? istNow.timeStr : '02:45 PM IST';
               const exitTimestamp = `${bar.date} at ${exitTime}`;
+
+              // Check if +4% was reached to activate Trailing Stop to Break-Even
+              if (!pred.isTrailingStopActivated && bar.high >= breakEvenThreshold) {
+                pred.isTrailingStopActivated = true;
+                pred.trailingStopPrice = entryPrice;
+                pred.executionLogs = pred.executionLogs || [];
+                pred.executionLogs.push({
+                  timestamp: exitTimestamp,
+                  action: 'TRAILING_STOP_ACTIVATED',
+                  price: entryPrice,
+                  message: `🛡️ Dynamic Trailing Stop Activated: High reached ₹${bar.high.toFixed(2)} (>= +4.0% gain). Stop-loss raised to Cost / Entry Price ₹${entryPrice.toFixed(2)} (100% Risk-Free Trade).`,
+                });
+                db.updatePrediction(pred.id, pred);
+              }
 
               if (bar.high >= pred.targetPrice || bar.close >= pred.targetPrice) {
                 pred.status = 'TARGET_HIT';
@@ -1543,6 +1643,7 @@ app.get('/api/predictions/track-record', async (_req: Request, res: Response) =>
                 pred.sellExecutionTimestamp = exitTimestamp;
                 pred.executionStatus = 'SELL_TARGET_EXECUTED';
                 pred.resultProfitLossPercent = pred.targetPercent;
+                pred.profitRupees = Number(((pred.targetPrice - entryPrice) * 1).toFixed(2));
                 pred.isWin = true;
                 pred.notes = `🎯 Target Achieved: High reached ₹${bar.high.toFixed(2)} on ${bar.date} at ${exitTime} vs Target ₹${pred.targetPrice.toFixed(2)}`;
                 
@@ -1551,7 +1652,31 @@ app.get('/api/predictions/track-record', async (_req: Request, res: Response) =>
                   timestamp: exitTimestamp,
                   action: 'TARGET_HIT',
                   price: pred.targetPrice,
-                  message: `🎯 Target Sell Order Executed at ₹${pred.targetPrice.toFixed(2)} (+${pred.targetPercent}%). Trade successfully closed with profit.`,
+                  message: `🎯 Target Sell Order Executed at ₹${pred.targetPrice.toFixed(2)} (+${pred.targetPercent}%). 1 Share P&L: +₹${pred.profitRupees}. Result: WIN (True).`,
+                });
+
+                db.updatePrediction(pred.id, pred);
+                break;
+              } else if (pred.isTrailingStopActivated && bar.low <= entryPrice) {
+                // Protected Break-Even Exit
+                pred.status = 'TIME_LIMIT_EXIT' as any;
+                pred.exitPrice = entryPrice;
+                pred.exitDate = bar.date;
+                pred.exitTime = exitTime;
+                pred.exitTimestamp = exitTimestamp;
+                pred.sellExecutionTimestamp = exitTimestamp;
+                pred.executionStatus = 'SELL_TIME_LIMIT';
+                pred.resultProfitLossPercent = 0.00;
+                pred.profitRupees = 0.00;
+                pred.isWin = true;
+                pred.notes = `🛡️ Break-Even Stop Hit: After touching +4.0% gain, price retraced to entry price ₹${entryPrice.toFixed(2)}. Exited with 0.00% loss (Capital Protected).`;
+
+                pred.executionLogs = pred.executionLogs || [];
+                pred.executionLogs.push({
+                  timestamp: exitTimestamp,
+                  action: 'BREAK_EVEN_EXIT',
+                  price: entryPrice,
+                  message: `🛡️ Break-Even Stop Executed at ₹${entryPrice.toFixed(2)} (0.00%). Capital protected after +4% gain. Result: WIN (True).`,
                 });
 
                 db.updatePrediction(pred.id, pred);
@@ -1565,6 +1690,7 @@ app.get('/api/predictions/track-record', async (_req: Request, res: Response) =>
                 pred.sellExecutionTimestamp = exitTimestamp;
                 pred.executionStatus = 'SELL_STOP_EXECUTED';
                 pred.resultProfitLossPercent = -pred.stopLossPercent;
+                pred.profitRupees = Number(((pred.stopLossPrice - entryPrice) * 1).toFixed(2));
                 pred.isWin = false;
                 pred.notes = `🛑 Stop-Loss Breached: Low reached ₹${bar.low.toFixed(2)} on ${bar.date} at ${exitTime} vs SL ₹${pred.stopLossPrice.toFixed(2)}`;
                 
@@ -1573,7 +1699,7 @@ app.get('/api/predictions/track-record', async (_req: Request, res: Response) =>
                   timestamp: exitTimestamp,
                   action: 'STOP_LOSS_HIT',
                   price: pred.stopLossPrice,
-                  message: `🛑 Stop-Loss Sell Order Executed at ₹${pred.stopLossPrice.toFixed(2)} (-${pred.stopLossPercent}%). Capital protected.`,
+                  message: `🛑 Stop-Loss Sell Order Executed at ₹${pred.stopLossPrice.toFixed(2)} (-${pred.stopLossPercent}%). 1 Share P&L: ₹${pred.profitRupees}. Result: LOSS (False).`,
                 });
 
                 db.updatePrediction(pred.id, pred);
@@ -1593,7 +1719,8 @@ app.get('/api/predictions/track-record', async (_req: Request, res: Response) =>
                   pred.sellExecutionTimestamp = exitTimestamp;
                   pred.executionStatus = 'SELL_TIME_LIMIT';
                   pred.resultProfitLossPercent = retPct;
-                  pred.isWin = retPct > 0;
+                  pred.profitRupees = Number(((exitPrice - entryPrice) * 1).toFixed(2));
+                  pred.isWin = retPct >= 0;
                   pred.notes = `⏱ Strategy Time Limit (${maxDays} Days): Sold at ₹${exitPrice.toFixed(2)} on ${bar.date} at ${exitTime} (${retPct >= 0 ? '+' : ''}${retPct}%).`;
                   
                   pred.executionLogs = pred.executionLogs || [];
@@ -1601,7 +1728,7 @@ app.get('/api/predictions/track-record', async (_req: Request, res: Response) =>
                     timestamp: exitTimestamp,
                     action: 'TIME_LIMIT_EXIT',
                     price: exitPrice,
-                    message: `⏱ Strategy Time Limit Reached (${maxDays} Days). Auto SELL Executed at ₹${exitPrice.toFixed(2)} (${retPct >= 0 ? '+' : ''}${retPct}%).`,
+                    message: `⏱ Strategy Time Limit Reached (${maxDays} Days). Auto SELL 1 Share at ₹${exitPrice.toFixed(2)} (${retPct >= 0 ? '+' : ''}${retPct}%). Realized P&L: ${retPct >= 0 ? '+' : ''}₹${pred.profitRupees}.`,
                   });
 
                   db.updatePrediction(pred.id, pred);

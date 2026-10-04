@@ -32,7 +32,7 @@ import {
 
 export interface TradeExecutionLog {
   timestamp: string;
-  action: 'RECOMMENDED' | 'BUY_SCHEDULED' | 'BUY_EXECUTED' | 'PRICE_TICK' | 'TARGET_HIT' | 'STOP_LOSS_HIT' | 'TIME_LIMIT_EXIT';
+  action: 'RECOMMENDED' | 'BUY_SCHEDULED' | 'BUY_EXECUTED' | 'PRICE_TICK' | 'TRAILING_STOP_ACTIVATED' | 'BREAK_EVEN_EXIT' | 'TARGET_HIT' | 'STOP_LOSS_HIT' | 'TIME_LIMIT_EXIT';
   price: number;
   message: string;
 }
@@ -41,6 +41,7 @@ interface PredictionItem {
   id: string;
   symbol: string;
   name: string;
+  quantity?: number; // Standardized test quantity: 1 share
   recommendedDate: string;
   recommendedTime?: string;
   recommendedTimestamp?: string;
@@ -57,6 +58,12 @@ interface PredictionItem {
   target2Price?: number;
   stopLossPrice: number;
   stopLossPercent: number;
+  
+  // Dynamic Trailing Stop to Break-Even (+4% Rule)
+  trailingStopTriggerPercent?: number; // 4.0%
+  trailingStopPrice?: number; // Entry Price
+  isTrailingStopActivated?: boolean;
+
   holdingHorizon: string;
   strategyTag: string;
   selectionMethod?: string;
@@ -69,6 +76,7 @@ interface PredictionItem {
   exitTimestamp?: string;
   sellExecutionTimestamp?: string;
   resultProfitLossPercent?: number;
+  profitRupees?: number; // Net profit/loss in ₹ for 1 share
   isWin?: boolean;
   notes?: string;
   executionLogs?: TradeExecutionLog[];
@@ -413,6 +421,39 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
           </div>
         </div>
 
+        {/* Core Prediction Ideology Callouts */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4 text-xs">
+          <div className="bg-slate-950/70 border border-slate-800 rounded-xl p-3 flex items-start gap-2.5">
+            <Target className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
+            <div>
+              <strong className="text-white block font-sans">1 Share Standardized Testing:</strong>
+              <span className="text-slate-400 leading-relaxed">
+                Purchases exactly 1 quantity and sells 1 quantity to isolate authentic algorithmic accuracy (True vs False) without capital skew.
+              </span>
+            </div>
+          </div>
+
+          <div className="bg-slate-950/70 border border-slate-800 rounded-xl p-3 flex items-start gap-2.5">
+            <ShieldAlert className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+            <div>
+              <strong className="text-white block font-sans">Dynamic Trailing Stop (+4% Rule):</strong>
+              <span className="text-slate-400 leading-relaxed">
+                At +4.0% gain, Stop-Loss automatically moves to Cost / Entry Price. Ensures winning positions never retrace into a loss.
+              </span>
+            </div>
+          </div>
+
+          <div className="bg-slate-950/70 border border-slate-800 rounded-xl p-3 flex items-start gap-2.5">
+            <Layers className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+            <div>
+              <strong className="text-white block font-sans">Sector Tide Protection:</strong>
+              <span className="text-slate-400 leading-relaxed">
+                If a sector is down today, buys from that sector are strictly suppressed until sector distribution subsides.
+              </span>
+            </div>
+          </div>
+        </div>
+
         {/* Visual Win / Loss Distribution Bar */}
         {totalResolved > 0 && (
           <div className="mt-5 space-y-1.5">
@@ -592,6 +633,10 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
                           {trade.buyExecutionTimestamp || `${trade.executionDate || trade.recommendedDate} at 09:15 AM IST`}
                         </span>
                       </div>
+                      <div className="flex items-center justify-between pt-1 border-t border-slate-800/60 text-[9px]">
+                        <span className="text-slate-400 font-sans">Test Quantity:</span>
+                        <span className="text-indigo-300 font-semibold">1 Share (Standardized Unit)</span>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-3 gap-2 font-mono-num text-xs pt-2 border-t border-slate-800/80">
@@ -608,15 +653,26 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
                         <span className="font-bold text-rose-400">₹{trade.stopLossPrice.toFixed(1)}</span>
                       </div>
                     </div>
+
+                    {/* Dynamic Trailing Stop Badge */}
+                    <div className="mt-2 bg-indigo-950/40 border border-indigo-700/40 rounded-lg p-2 flex items-center justify-between text-[10px] font-mono-num">
+                      <span className="text-indigo-300 font-sans flex items-center gap-1">
+                        <ShieldAlert className="w-3 h-3 text-amber-300" />
+                        <span>Trailing SL (+4% Rule):</span>
+                      </span>
+                      <span className="text-amber-300 font-bold">
+                        Cost @ ₹{(trade.recommendedEntryPrice * 1.04).toFixed(1)}
+                      </span>
+                    </div>
                   </div>
 
                   <div className="mt-3 pt-2.5 border-t border-slate-800 flex items-center justify-between text-xs font-mono-num">
                     <span className="text-slate-400 text-[11px]">
-                      Live CMP: ₹{trade.currentPrice.toFixed(1)}
+                      Live CMP: ₹{trade.currentPrice.toFixed(1)} (1 Share)
                     </span>
                     <span className={`font-bold flex items-center gap-1 ${isProfit ? 'text-emerald-400' : 'text-rose-400'}`}>
                       {isProfit ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
-                      <span>{isProfit ? '+' : ''}{currentPnL}%</span>
+                      <span>{isProfit ? '+' : ''}{currentPnL}% ({isProfit ? '+' : '-'}₹{(Math.abs(trade.currentPrice - trade.recommendedEntryPrice) * 1).toFixed(1)})</span>
                     </span>
                   </div>
                 </div>
@@ -720,10 +776,10 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
                   <th className="py-3 px-4">Selection Method &amp; Strategy Formula</th>
                   <th className="py-3 px-3 text-right">Entry Price</th>
                   <th className="py-3 px-3 text-right">Target Sell</th>
-                  <th className="py-3 px-3 text-right">Stop Loss</th>
+                  <th className="py-3 px-3 text-right">Stop Loss &amp; Trailing</th>
                   <th className="py-3 px-3 text-center">Holding Horizon</th>
-                  <th className="py-3 px-3 text-center">Execution Result</th>
-                  <th className="py-3 px-3 text-right">P&amp;L Return</th>
+                  <th className="py-3 px-3 text-center">Prediction Outcome</th>
+                  <th className="py-3 px-3 text-right">P&amp;L Return (1 Share)</th>
                   <th className="py-3 px-3 text-center">Delete</th>
                 </tr>
               </thead>
@@ -739,6 +795,7 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
                     const isClosed = trade.status !== 'ACTIVE';
                     const isProfit = (trade.resultProfitLossPercent ?? 0) > 0;
                     const methodName = trade.selectionMethod || trade.strategyTag;
+                    const currentPnL = Number((((trade.currentPrice - trade.recommendedEntryPrice) / trade.recommendedEntryPrice) * 100).toFixed(2));
                     return (
                       <tr
                         key={trade.id}
@@ -855,11 +912,14 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
                           </div>
                         </td>
 
-                        {/* Stop Loss */}
+                        {/* Stop Loss & Trailing */}
                         <td className="py-3 px-3 text-right text-rose-400 font-bold">
                           ₹{trade.stopLossPrice.toFixed(2)}
                           <div className="text-[10px] text-rose-500/80 font-normal">
                             -{trade.stopLossPercent}%
+                          </div>
+                          <div className="text-[9px] text-indigo-300 font-normal mt-0.5" title="At +4.0% gain, Stop-Loss moves to Cost (Break-Even)">
+                            🛡️ Trailing: ₹{(trade.recommendedEntryPrice * 1.04).toFixed(1)}
                           </div>
                         </td>
 
@@ -870,27 +930,27 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
                           </span>
                         </td>
 
-                        {/* Execution Result Badge */}
+                        {/* Prediction Outcome (True vs False) */}
                         <td className="py-3 px-3 text-center">
                           {trade.status === 'TARGET_HIT' ? (
                             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-700">
                               <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                              <span>TARGET HIT (WIN)</span>
+                              <span>TRUE (TARGET WIN)</span>
                             </span>
                           ) : trade.status === 'STOP_LOSS_HIT' ? (
                             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-rose-950 text-rose-300 border border-rose-700">
                               <XCircle className="w-3 h-3 text-rose-400" />
-                              <span>STOP LOSS CUT</span>
+                              <span>FALSE (STOP LOSS)</span>
                             </span>
                           ) : trade.status === 'TIME_LIMIT_EXIT' ? (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-950 text-amber-300 border border-amber-700">
-                              <Clock className="w-3 h-3 text-amber-400" />
-                              <span>TIME LIMIT EXIT</span>
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-indigo-950 text-indigo-300 border border-indigo-700">
+                              <ShieldAlert className="w-3 h-3 text-indigo-400" />
+                              <span>TRUE (BREAK-EVEN / EXIT)</span>
                             </span>
                           ) : (
                             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-indigo-950 text-indigo-300 border border-indigo-700">
                               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                              <span>ACTIVE IN-MARKET</span>
+                              <span>ACTIVE (1 SHARE)</span>
                             </span>
                           )}
                           {trade.exitDate && (
@@ -900,15 +960,25 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
                           )}
                         </td>
 
-                        {/* P&L Return */}
+                        {/* P&L Return (1 Share) */}
                         <td className="py-3 px-3 text-right">
                           {isClosed ? (
-                            <div className={`font-bold text-sm ${isProfit ? 'text-emerald-400' : 'text-rose-400'}`}>
-                              {isProfit ? '+' : ''}{trade.resultProfitLossPercent?.toFixed(2)}%
+                            <div>
+                              <div className={`font-bold text-sm ${isProfit ? 'text-emerald-400' : 'text-rose-400'}`}>
+                                {isProfit ? '+' : ''}{trade.resultProfitLossPercent?.toFixed(2)}%
+                              </div>
+                              <div className={`text-[10px] font-semibold ${isProfit ? 'text-emerald-500' : 'text-rose-500'}`}>
+                                {isProfit ? '+' : '-'}₹{Math.abs(trade.profitRupees ?? ((trade.exitPrice || 0) - trade.recommendedEntryPrice)).toFixed(2)} (1 Qty)
+                              </div>
                             </div>
                           ) : (
-                            <div className="text-slate-400 font-bold text-xs">
-                              In Progress
+                            <div>
+                              <div className={`font-bold text-xs ${currentPnL >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                                {currentPnL >= 0 ? '+' : ''}{currentPnL}%
+                              </div>
+                              <div className="text-[10px] text-slate-400">
+                                {currentPnL >= 0 ? '+' : '-'}₹{Math.abs(trade.currentPrice - trade.recommendedEntryPrice).toFixed(1)} (1 Qty)
+                              </div>
                             </div>
                           )}
                         </td>
@@ -1053,7 +1123,11 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
             </div>
 
             {/* Execution Overview Strip */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-950 border border-slate-800 rounded-xl p-3.5 font-mono-num text-xs">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 bg-slate-950 border border-slate-800 rounded-xl p-3.5 font-mono-num text-xs">
+              <div>
+                <span className="text-[10px] text-slate-500 font-sans block">Test Quantity</span>
+                <span className="font-bold text-indigo-300">1 Share (Standard)</span>
+              </div>
               <div>
                 <span className="text-[10px] text-slate-500 font-sans block">Entry Price</span>
                 <span className="font-bold text-white">₹{selectedLogsTrade.recommendedEntryPrice.toFixed(2)}</span>
@@ -1067,8 +1141,8 @@ export const AutoStrategyPaperTraderView: React.FC<AutoStrategyPaperTraderViewPr
                 <span className="font-bold text-rose-400">₹{selectedLogsTrade.stopLossPrice.toFixed(2)}</span>
               </div>
               <div>
-                <span className="text-[10px] text-indigo-400 font-sans block">Holding Horizon</span>
-                <span className="font-semibold text-slate-200 text-[11px] truncate block">{selectedLogsTrade.holdingHorizon}</span>
+                <span className="text-[10px] text-amber-400 font-sans block">Trailing SL (+4%)</span>
+                <span className="font-bold text-amber-300">Cost @ ₹{(selectedLogsTrade.recommendedEntryPrice * 1.04).toFixed(1)}</span>
               </div>
             </div>
 

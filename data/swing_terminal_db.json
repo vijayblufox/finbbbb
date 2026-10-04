@@ -1,6 +1,6 @@
 {
   "version": "2.2.0",
-  "lastUpdated": "2026-10-04T02:26:13.158Z",
+  "lastUpdated": "2026-10-04T02:28:12.034Z",
   "capital": {
     "initial": 1000000,
     "availableCash": 809046
@@ -88,7 +88,11 @@
           "price": 1826,
           "message": "📅 Market Buy Order Scheduled for 2026-10-05 at 09:15 AM IST (NSE Open) @ Entry ₹1826.00."
         }
-      ]
+      ],
+      "quantity": 1,
+      "trailingStopTriggerPercent": 4,
+      "trailingStopPrice": 1826,
+      "isTrailingStopActivated": false
     },
     {
       "id": "pred_KOTAKBANK.NS_2026-10-04_t3ej",
@@ -128,7 +132,11 @@
           "price": 418.35,
           "message": "📅 Market Buy Order Scheduled for 2026-10-05 at 09:15 AM IST (NSE Open) @ Entry ₹418.35."
         }
-      ]
+      ],
+      "quantity": 1,
+      "trailingStopTriggerPercent": 4,
+      "trailingStopPrice": 418.35,
+      "isTrailingStopActivated": false
     },
     {
       "id": "pred_MANKIND.NS_2026-10-04_i4do",
@@ -168,7 +176,11 @@
           "price": 2535,
           "message": "📅 Market Buy Order Scheduled for 2026-10-05 at 09:15 AM IST (NSE Open) @ Entry ₹2535.00."
         }
-      ]
+      ],
+      "quantity": 1,
+      "trailingStopTriggerPercent": 4,
+      "trailingStopPrice": 2535,
+      "isTrailingStopActivated": false
     },
     {
       "id": "pred_CYIENT.NS_2026-10-04_6u24",
@@ -208,7 +220,11 @@
           "price": 1110.2,
           "message": "📅 Market Buy Order Scheduled for 2026-10-05 at 09:15 AM IST (NSE Open) @ Entry ₹1110.20."
         }
-      ]
+      ],
+      "quantity": 1,
+      "trailingStopTriggerPercent": 4,
+      "trailingStopPrice": 1110.2,
+      "isTrailingStopActivated": false
     },
     {
       "id": "pred_KOTAKBANK.NS_2026-10-01_2uax",
@@ -260,7 +276,12 @@
           "price": 406.02,
           "message": "🛑 Stop-Loss Hit (-2.63%). Auto SELL Executed at ₹406.02. Capital protected."
         }
-      ]
+      ],
+      "quantity": 1,
+      "trailingStopTriggerPercent": 4,
+      "trailingStopPrice": 417,
+      "isTrailingStopActivated": false,
+      "profitRupees": -10.98
     },
     {
       "id": "pred_cyient_0924",
@@ -312,7 +333,12 @@
           "price": 1138,
           "message": "🎯 Target Achieved (+7.58%). Auto SELL Executed at ₹1138.00. Profit locked."
         }
-      ]
+      ],
+      "quantity": 1,
+      "trailingStopTriggerPercent": 4,
+      "trailingStopPrice": 1057.8,
+      "isTrailingStopActivated": false,
+      "profitRupees": 80.2
     },
     {
       "id": "pred_mankind_0924",
@@ -364,7 +390,12 @@
           "price": 2552,
           "message": "🎯 Target Achieved (+4.48%). Auto SELL Executed at ₹2552.00. Profit locked."
         }
-      ]
+      ],
+      "quantity": 1,
+      "trailingStopTriggerPercent": 4,
+      "trailingStopPrice": 2442.6,
+      "isTrailingStopActivated": false,
+      "profitRupees": 109.4
     },
     {
       "id": "pred_reliance_0925",
@@ -416,7 +447,12 @@
           "price": 1185,
           "message": "🛑 Stop-Loss Hit (-3.34%). Auto SELL Executed at ₹1185.00. Capital protected."
         }
-      ]
+      ],
+      "quantity": 1,
+      "trailingStopTriggerPercent": 4,
+      "trailingStopPrice": 1226,
+      "isTrailingStopActivated": false,
+      "profitRupees": -41
     },
     {
       "id": "pred_infy_0925",
@@ -468,10 +504,29 @@
           "price": 1024,
           "message": "🎯 Target Achieved (+2.38%). Auto SELL Executed at ₹1024.00. Profit locked."
         }
-      ]
+      ],
+      "quantity": 1,
+      "trailingStopTriggerPercent": 4,
+      "trailingStopPrice": 1000.2,
+      "isTrailingStopActivated": false,
+      "profitRupees": 23.8
     }
   ],
   "scanAuditHistory": [
+    {
+      "timestamp": "2026-10-04T02:28:12.034Z",
+      "scanNumberToday": 1,
+      "totalScanned": 89,
+      "callsGenerated": 0,
+      "niftyRegime": "CORRECTION"
+    },
+    {
+      "timestamp": "2026-10-04T02:28:01.877Z",
+      "scanNumberToday": 1,
+      "totalScanned": 89,
+      "callsGenerated": 0,
+      "niftyRegime": "CORRECTION"
+    },
     {
       "timestamp": "2026-10-04T02:26:13.158Z",
       "scanNumberToday": 1,

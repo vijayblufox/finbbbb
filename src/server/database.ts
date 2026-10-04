@@ -35,7 +35,7 @@ export interface TradeRecord {
 
 export interface TradeExecutionLog {
   timestamp: string; // e.g. "04 Oct 2026, 11:38 AM IST"
-  action: 'RECOMMENDED' | 'BUY_SCHEDULED' | 'BUY_EXECUTED' | 'PRICE_TICK' | 'TARGET_HIT' | 'STOP_LOSS_HIT' | 'TIME_LIMIT_EXIT';
+  action: 'RECOMMENDED' | 'BUY_SCHEDULED' | 'BUY_EXECUTED' | 'PRICE_TICK' | 'TRAILING_STOP_ACTIVATED' | 'BREAK_EVEN_EXIT' | 'TARGET_HIT' | 'STOP_LOSS_HIT' | 'TIME_LIMIT_EXIT';
   price: number;
   message: string;
 }
@@ -44,6 +44,7 @@ export interface HistoricalPredictionRecord {
   id: string;
   symbol: string;
   name: string;
+  quantity?: number; // Standardized test unit: 1 share
   recommendedDate: string; // Date recommendation was generated
   recommendedTime?: string; // Time recommendation was generated
   recommendedTimestamp?: string; // Full IST string: e.g. "04 Oct 2026, 11:38 AM IST"
@@ -62,6 +63,12 @@ export interface HistoricalPredictionRecord {
   target2Price?: number;
   stopLossPrice: number;
   stopLossPercent: number;
+
+  // Dynamic Trailing Stop to Break-Even (+4% Rule)
+  trailingStopTriggerPercent?: number; // +4.0%
+  trailingStopPrice?: number; // Moves to recommendedEntryPrice once +4% reached
+  isTrailingStopActivated?: boolean; // True once stock touches +4% gain
+
   holdingHorizon: string;
   strategyTag: string;
   selectionMethod?: string;
@@ -76,6 +83,7 @@ export interface HistoricalPredictionRecord {
   sellExecutionTimestamp?: string;
 
   resultProfitLossPercent?: number;
+  profitRupees?: number; // Realized P&L in ₹ for 1 share
   isWin?: boolean;
   notes?: string;
 
