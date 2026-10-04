@@ -292,10 +292,19 @@ export class PersistentDatabase {
     if (!newPredictions || newPredictions.length === 0) return;
 
     for (const pred of newPredictions) {
-      const exists = this.state.predictions.some(
-        p => p.symbol === pred.symbol && p.recommendedDate === pred.recommendedDate
+      // Check if an ACTIVE prediction already exists for this symbol OR for this session date
+      const existingActiveIndex = this.state.predictions.findIndex(
+        p => p.symbol === pred.symbol && (p.status === 'ACTIVE' || p.recommendedDate === pred.recommendedDate)
       );
-      if (!exists) {
+
+      if (existingActiveIndex !== -1) {
+        // Stock is already actively tracked: update live market price without duplicating
+        this.state.predictions[existingActiveIndex] = {
+          ...this.state.predictions[existingActiveIndex],
+          currentPrice: pred.currentPrice,
+          confidenceScore: Math.max(this.state.predictions[existingActiveIndex].confidenceScore, pred.confidenceScore),
+        };
+      } else {
         this.state.predictions.unshift(pred);
       }
     }
