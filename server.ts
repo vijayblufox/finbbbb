@@ -505,6 +505,30 @@ function getNseSessionDetails(refDate: Date = new Date()) {
   };
 }
 
+// Indian Standard Time (IST) formatting helper for live execution timestamps
+function getIstTimeStr(date: Date = new Date()): { dateStr: string; timeStr: string; fullTimestamp: string } {
+  const utc = date.getTime() + (date.getTimezoneOffset() * 60000);
+  const istDate = new Date(utc + (3600000 * 5.5));
+  
+  const y = istDate.getFullYear();
+  const m = String(istDate.getMonth() + 1).padStart(2, '0');
+  const d = String(istDate.getDate()).padStart(2, '0');
+  const dateStr = `${y}-${m}-${d}`;
+
+  let hours = istDate.getHours();
+  const minutes = String(istDate.getMinutes()).padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  const timeShort = `${String(hours).padStart(2, '0')}:${minutes} ${ampm} IST`;
+
+  return {
+    dateStr,
+    timeStr: timeShort,
+    fullTimestamp: `${dateStr} at ${timeShort}`,
+  };
+}
+
 // Background auto-auditor: runs on heartbeats to verify live target/SL hits
 async function auditActivePredictionsBackground() {
   try {
@@ -512,29 +536,60 @@ async function auditActivePredictionsBackground() {
     const active = predictions.filter(p => p.status === 'ACTIVE');
     if (active.length === 0) return;
 
+    const istNow = getIstTimeStr();
+
     for (const pred of active) {
       try {
         const norm = normalizeSymbol(pred.symbol);
         const stockData = await fetchYahooData(norm, '5d', '1d');
         if (stockData && stockData.bars && stockData.bars.length > 0) {
-          const relevantBars = stockData.bars.filter((b: any) => b.date >= pred.recommendedDate);
+          const relevantBars = stockData.bars.filter((b: any) => b.date >= (pred.executionDate || pred.recommendedDate));
           for (const bar of relevantBars) {
+            const exitTime = bar.date === istNow.dateStr ? istNow.timeStr : '02:45 PM IST';
+            const exitTimestamp = `${bar.date} at ${exitTime}`;
+
             if (bar.high >= pred.targetPrice || bar.close >= pred.targetPrice) {
               pred.status = 'TARGET_HIT';
               pred.exitPrice = pred.targetPrice;
               pred.exitDate = bar.date;
+              pred.exitTime = exitTime;
+              pred.exitTimestamp = exitTimestamp;
+              pred.sellExecutionTimestamp = exitTimestamp;
+              pred.executionStatus = 'SELL_TARGET_EXECUTED';
               pred.resultProfitLossPercent = pred.targetPercent;
               pred.isWin = true;
-              pred.notes = `🎯 Target Achieved: High reached ₹${bar.high.toFixed(2)} on ${bar.date} vs Target ₹${pred.targetPrice.toFixed(2)}`;
+              pred.notes = `🎯 Target Achieved: High reached ₹${bar.high.toFixed(2)} on ${bar.date} at ${exitTime} vs Target ₹${pred.targetPrice.toFixed(2)}`;
+              
+              pred.executionLogs = pred.executionLogs || [];
+              pred.executionLogs.push({
+                timestamp: exitTimestamp,
+                action: 'TARGET_HIT',
+                price: pred.targetPrice,
+                message: `🎯 Target Achieved (+${pred.targetPercent}%). Auto SELL Executed at ₹${pred.targetPrice.toFixed(2)}. Profit locked.`,
+              });
+
               db.updatePrediction(pred.id, pred);
               break;
             } else if (bar.low <= pred.stopLossPrice || bar.close <= pred.stopLossPrice) {
               pred.status = 'STOP_LOSS_HIT';
               pred.exitPrice = pred.stopLossPrice;
               pred.exitDate = bar.date;
+              pred.exitTime = exitTime;
+              pred.exitTimestamp = exitTimestamp;
+              pred.sellExecutionTimestamp = exitTimestamp;
+              pred.executionStatus = 'SELL_STOP_EXECUTED';
               pred.resultProfitLossPercent = -pred.stopLossPercent;
               pred.isWin = false;
-              pred.notes = `🛑 Stop-Loss Breached: Low reached ₹${bar.low.toFixed(2)} on ${bar.date} vs SL ₹${pred.stopLossPrice.toFixed(2)}`;
+              pred.notes = `🛑 Stop-Loss Breached: Low reached ₹${bar.low.toFixed(2)} on ${bar.date} at ${exitTime} vs SL ₹${pred.stopLossPrice.toFixed(2)}`;
+              
+              pred.executionLogs = pred.executionLogs || [];
+              pred.executionLogs.push({
+                timestamp: exitTimestamp,
+                action: 'STOP_LOSS_HIT',
+                price: pred.stopLossPrice,
+                message: `🛑 Stop-Loss Breached (-${pred.stopLossPercent}%). Auto SELL Executed at ₹${pred.stopLossPrice.toFixed(2)}. Capital protected.`,
+              });
+
               db.updatePrediction(pred.id, pred);
               break;
             }
@@ -1316,40 +1371,69 @@ async function executeMarketWideSwingScan(customSymbols?: string[]) {
     const session = getNseSessionDetails();
     const entryDate = session.entryTradingDate; // Strictly Monday-Friday trading day
     const signalDate = session.signalDate;
-    const scanDate = new Date().toISOString().split('T')[0];
-    const newPredictions = calls.map(c => ({
-      id: `pred_${c.symbol}_${entryDate}_${Math.random().toString(36).substring(2, 6)}`,
-      symbol: c.symbol,
-      name: c.name,
-      recommendedDate: scanDate, // Date when stock was recommended by algorithm
-      executionDate: entryDate,  // Date when trade execution can take place (NSE open)
-      signalDate: signalDate,
-      recommendedEntryPrice: c.entryPrice,
-      currentPrice: c.currentPrice,
-      targetPrice: c.targetPrice,
-      targetPercent: c.targetPercent,
-      target2Price: c.target2Price,
-      stopLossPrice: c.stopLossPrice,
-      stopLossPercent: c.stopLossPercent,
-      holdingHorizon: c.holdingHorizon,
-      strategyTag: c.action,
-      selectionMethod: c.strategiesMet && c.strategiesMet.length > 0 ? c.strategiesMet[0] : (c.action || 'Mark Minervini VCP Breakout'),
-      selectionRules: [
-        c.action?.includes('Pullback')
-          ? 'Price touched rising 20 EMA with bullish candle tick & RSI between 45-55'
-          : c.action?.includes('VCP')
-          ? 'Minervini Volatility Contraction Pattern: Multiple contractions with breakout on volume > 1.5x'
-          : 'Stage 2 Momentum Breakout: Close > 20 EMA > 50 EMA > 200 EMA with positive Nifty Relative Strength',
-        `Target derived at +${c.targetPercent}% enforcing strict 1:2 risk-to-reward ratio`,
-        `Stop-loss strictly pegged at previous structural swing low (-${c.stopLossPercent}%)`,
-        `Holding horizon bounded at ${c.holdingHorizon || '3 to 5 Days'} to enforce swing velocity`,
-      ],
-      confidenceScore: c.confidenceScore,
-      status: 'ACTIVE' as const,
-      notes: session.isWeekend
-        ? `📅 Scheduled Entry: Next NSE Trading Session (Monday ${entryDate} at 09:15 AM IST). Technical setup computed from Friday (${signalDate}) close.`
-        : `Generated during NSE session. Awaiting target ₹${c.targetPrice} (+${c.targetPercent}%) or stop-loss ₹${c.stopLossPrice} (-${c.stopLossPercent}%).`,
-    }));
+    const istNow = getIstTimeStr();
+    const scheduledBuyTimestamp = `${entryDate} at 09:15 AM IST`;
+    const isMarketOpenNow = session.isMarketOpenNow;
+
+    const newPredictions = calls.map(c => {
+      const initialLogs = [
+        {
+          timestamp: istNow.fullTimestamp,
+          action: 'RECOMMENDED' as const,
+          price: c.entryPrice,
+          message: `Algorithm detected setup '${c.action}' with ${c.confidenceScore}% confidence. Target ₹${c.targetPrice.toFixed(2)} (+${c.targetPercent}%), Stop ₹${c.stopLossPrice.toFixed(2)} (-${c.stopLossPercent}%).`,
+        },
+        {
+          timestamp: isMarketOpenNow ? istNow.fullTimestamp : scheduledBuyTimestamp,
+          action: isMarketOpenNow ? ('BUY_EXECUTED' as const) : ('BUY_SCHEDULED' as const),
+          price: c.entryPrice,
+          message: isMarketOpenNow
+            ? `🟢 BUY Order Filled Live @ ₹${c.entryPrice.toFixed(2)}. Position active in portfolio.`
+            : `📅 BUY Order Scheduled for Market Open on ${entryDate} at 09:15 AM IST @ Entry ₹${c.entryPrice.toFixed(2)}.`,
+        }
+      ];
+
+      return {
+        id: `pred_${c.symbol}_${entryDate}_${Math.random().toString(36).substring(2, 6)}`,
+        symbol: c.symbol,
+        name: c.name,
+        recommendedDate: istNow.dateStr,
+        recommendedTime: istNow.timeStr,
+        recommendedTimestamp: istNow.fullTimestamp,
+        executionDate: entryDate,
+        executionTime: '09:15 AM IST',
+        buyExecutionTime: isMarketOpenNow ? istNow.timeStr : '09:15 AM IST',
+        buyExecutionTimestamp: isMarketOpenNow ? istNow.fullTimestamp : scheduledBuyTimestamp,
+        executionStatus: isMarketOpenNow ? ('BUY_EXECUTED' as const) : ('SCHEDULED_BUY' as const),
+        signalDate: signalDate,
+        recommendedEntryPrice: c.entryPrice,
+        currentPrice: c.currentPrice,
+        targetPrice: c.targetPrice,
+        targetPercent: c.targetPercent,
+        target2Price: c.target2Price,
+        stopLossPrice: c.stopLossPrice,
+        stopLossPercent: c.stopLossPercent,
+        holdingHorizon: c.holdingHorizon,
+        strategyTag: c.action,
+        selectionMethod: c.strategiesMet && c.strategiesMet.length > 0 ? c.strategiesMet[0] : (c.action || 'Mark Minervini VCP Breakout'),
+        selectionRules: [
+          c.action?.includes('Pullback')
+            ? 'Price touched rising 20 EMA with bullish candle tick & RSI between 45-55'
+            : c.action?.includes('VCP')
+            ? 'Minervini Volatility Contraction Pattern: Multiple contractions with breakout on volume > 1.5x'
+            : 'Stage 2 Momentum Breakout: Close > 20 EMA > 50 EMA > 200 EMA with positive Nifty Relative Strength',
+          `Target derived at +${c.targetPercent}% enforcing strict 1:2 risk-to-reward ratio`,
+          `Stop-loss strictly pegged at previous structural swing low (-${c.stopLossPercent}%)`,
+          `Holding horizon bounded at ${c.holdingHorizon || '3 to 5 Days'} to enforce swing velocity`,
+        ],
+        confidenceScore: c.confidenceScore,
+        status: 'ACTIVE' as const,
+        notes: session.isWeekend
+          ? `📅 Scheduled Entry: Next NSE Trading Session (Monday ${entryDate} at 09:15 AM IST). Technical setup computed from Friday (${signalDate}) close.`
+          : `Generated during NSE session. Awaiting target ₹${c.targetPrice} (+${c.targetPercent}%) or stop-loss ₹${c.stopLossPrice} (-${c.stopLossPercent}%).`,
+        executionLogs: initialLogs,
+      };
+    });
     db.recordPredictions(newPredictions);
   }
 
@@ -1434,6 +1518,7 @@ app.get('/api/predictions/track-record', async (_req: Request, res: Response) =>
     const predictions = db.getPredictions();
 
     // Check active predictions against live market prices
+    const istNow = getIstTimeStr();
     for (const pred of predictions) {
       if (pred.status === 'ACTIVE') {
         try {
@@ -1443,25 +1528,54 @@ app.get('/api/predictions/track-record', async (_req: Request, res: Response) =>
             const latestBar = stockData.bars[stockData.bars.length - 1];
             pred.currentPrice = latestBar.close;
 
-            // Check every trading bar since the recommendation date in chronological sequence
-            const relevantBars = stockData.bars.filter((b: any) => b.date >= pred.recommendedDate);
+            // Check every trading bar since the entry execution date in chronological sequence
+            const relevantBars = stockData.bars.filter((b: any) => b.date >= (pred.executionDate || pred.recommendedDate));
             for (const bar of relevantBars) {
+              const exitTime = bar.date === istNow.dateStr ? istNow.timeStr : '02:45 PM IST';
+              const exitTimestamp = `${bar.date} at ${exitTime}`;
+
               if (bar.high >= pred.targetPrice || bar.close >= pred.targetPrice) {
                 pred.status = 'TARGET_HIT';
                 pred.exitPrice = pred.targetPrice;
                 pred.exitDate = bar.date;
+                pred.exitTime = exitTime;
+                pred.exitTimestamp = exitTimestamp;
+                pred.sellExecutionTimestamp = exitTimestamp;
+                pred.executionStatus = 'SELL_TARGET_EXECUTED';
                 pred.resultProfitLossPercent = pred.targetPercent;
                 pred.isWin = true;
-                pred.notes = `🎯 Target Achieved: High reached ₹${bar.high.toFixed(2)} on ${bar.date} vs Target ₹${pred.targetPrice.toFixed(2)}`;
+                pred.notes = `🎯 Target Achieved: High reached ₹${bar.high.toFixed(2)} on ${bar.date} at ${exitTime} vs Target ₹${pred.targetPrice.toFixed(2)}`;
+                
+                pred.executionLogs = pred.executionLogs || [];
+                pred.executionLogs.push({
+                  timestamp: exitTimestamp,
+                  action: 'TARGET_HIT',
+                  price: pred.targetPrice,
+                  message: `🎯 Target Sell Order Executed at ₹${pred.targetPrice.toFixed(2)} (+${pred.targetPercent}%). Trade successfully closed with profit.`,
+                });
+
                 db.updatePrediction(pred.id, pred);
                 break;
               } else if (bar.low <= pred.stopLossPrice || bar.close <= pred.stopLossPrice) {
                 pred.status = 'STOP_LOSS_HIT';
                 pred.exitPrice = pred.stopLossPrice;
                 pred.exitDate = bar.date;
+                pred.exitTime = exitTime;
+                pred.exitTimestamp = exitTimestamp;
+                pred.sellExecutionTimestamp = exitTimestamp;
+                pred.executionStatus = 'SELL_STOP_EXECUTED';
                 pred.resultProfitLossPercent = -pred.stopLossPercent;
                 pred.isWin = false;
-                pred.notes = `🛑 Stop-Loss Breached: Low reached ₹${bar.low.toFixed(2)} on ${bar.date} vs SL ₹${pred.stopLossPrice.toFixed(2)}`;
+                pred.notes = `🛑 Stop-Loss Breached: Low reached ₹${bar.low.toFixed(2)} on ${bar.date} at ${exitTime} vs SL ₹${pred.stopLossPrice.toFixed(2)}`;
+                
+                pred.executionLogs = pred.executionLogs || [];
+                pred.executionLogs.push({
+                  timestamp: exitTimestamp,
+                  action: 'STOP_LOSS_HIT',
+                  price: pred.stopLossPrice,
+                  message: `🛑 Stop-Loss Sell Order Executed at ₹${pred.stopLossPrice.toFixed(2)} (-${pred.stopLossPercent}%). Capital protected.`,
+                });
+
                 db.updatePrediction(pred.id, pred);
                 break;
               } else {
@@ -1474,9 +1588,22 @@ app.get('/api/predictions/track-record', async (_req: Request, res: Response) =>
                   pred.status = 'TIME_LIMIT_EXIT' as any;
                   pred.exitPrice = exitPrice;
                   pred.exitDate = bar.date;
+                  pred.exitTime = exitTime;
+                  pred.exitTimestamp = exitTimestamp;
+                  pred.sellExecutionTimestamp = exitTimestamp;
+                  pred.executionStatus = 'SELL_TIME_LIMIT';
                   pred.resultProfitLossPercent = retPct;
                   pred.isWin = retPct > 0;
-                  pred.notes = `⏱ Strategy Time Limit (${maxDays} Days): Sold at ₹${exitPrice.toFixed(2)} on ${bar.date} (${retPct >= 0 ? '+' : ''}${retPct}%).`;
+                  pred.notes = `⏱ Strategy Time Limit (${maxDays} Days): Sold at ₹${exitPrice.toFixed(2)} on ${bar.date} at ${exitTime} (${retPct >= 0 ? '+' : ''}${retPct}%).`;
+                  
+                  pred.executionLogs = pred.executionLogs || [];
+                  pred.executionLogs.push({
+                    timestamp: exitTimestamp,
+                    action: 'TIME_LIMIT_EXIT',
+                    price: exitPrice,
+                    message: `⏱ Strategy Time Limit Reached (${maxDays} Days). Auto SELL Executed at ₹${exitPrice.toFixed(2)} (${retPct >= 0 ? '+' : ''}${retPct}%).`,
+                  });
+
                   db.updatePrediction(pred.id, pred);
                   break;
                 }

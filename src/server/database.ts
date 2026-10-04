@@ -33,12 +33,27 @@ export interface TradeRecord {
   notes?: string;
 }
 
+export interface TradeExecutionLog {
+  timestamp: string; // e.g. "04 Oct 2026, 11:38 AM IST"
+  action: 'RECOMMENDED' | 'BUY_SCHEDULED' | 'BUY_EXECUTED' | 'PRICE_TICK' | 'TARGET_HIT' | 'STOP_LOSS_HIT' | 'TIME_LIMIT_EXIT';
+  price: number;
+  message: string;
+}
+
 export interface HistoricalPredictionRecord {
   id: string;
   symbol: string;
   name: string;
   recommendedDate: string; // Date recommendation was generated
+  recommendedTime?: string; // Time recommendation was generated
+  recommendedTimestamp?: string; // Full IST string: e.g. "04 Oct 2026, 11:38 AM IST"
+  
   executionDate?: string;   // Actionable market entry session date
+  executionTime?: string;   // Target entry time, e.g. "09:15 AM IST"
+  buyExecutionTime?: string;
+  buyExecutionTimestamp?: string;
+  executionStatus?: 'SCHEDULED_BUY' | 'BUY_EXECUTED' | 'SELL_TARGET_EXECUTED' | 'SELL_STOP_EXECUTED' | 'SELL_TIME_LIMIT';
+
   signalDate?: string;      // Source candle date analyzed
   recommendedEntryPrice: number;
   currentPrice: number;
@@ -52,12 +67,19 @@ export interface HistoricalPredictionRecord {
   selectionMethod?: string;
   selectionRules?: string[];
   confidenceScore: number;
-  status: 'ACTIVE' | 'TARGET_HIT' | 'STOP_LOSS_HIT';
+  status: 'ACTIVE' | 'TARGET_HIT' | 'STOP_LOSS_HIT' | 'TIME_LIMIT_EXIT';
+
   exitPrice?: number;
   exitDate?: string;
+  exitTime?: string;
+  exitTimestamp?: string;
+  sellExecutionTimestamp?: string;
+
   resultProfitLossPercent?: number;
   isWin?: boolean;
   notes?: string;
+
+  executionLogs?: TradeExecutionLog[];
 }
 
 export interface DatabaseState {

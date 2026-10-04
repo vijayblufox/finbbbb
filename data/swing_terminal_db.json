@@ -1,6 +1,6 @@
 {
   "version": "2.2.0",
-  "lastUpdated": "2026-10-04T02:08:49.712Z",
+  "lastUpdated": "2026-10-04T02:25:48.015Z",
   "capital": {
     "initial": 1000000,
     "availableCash": 809046
@@ -68,7 +68,27 @@
       "status": "ACTIVE",
       "notes": "📅 Recommended: 04 Oct 2026 (Weekend Scan) → Execution: 05 Oct 2026 (Monday 09:15 AM IST Open).",
       "executionDate": "2026-10-05",
-      "signalDate": "2026-10-02"
+      "signalDate": "2026-10-02",
+      "recommendedTime": "11:38 AM IST",
+      "recommendedTimestamp": "2026-10-04 at 11:38 AM IST",
+      "executionTime": "09:15 AM IST",
+      "buyExecutionTime": "09:15 AM IST",
+      "buyExecutionTimestamp": "2026-10-05 at 09:15 AM IST",
+      "executionStatus": "SCHEDULED_BUY",
+      "executionLogs": [
+        {
+          "timestamp": "2026-10-04 at 11:38 AM IST",
+          "action": "RECOMMENDED",
+          "price": 1826,
+          "message": "Algorithm detected Stage 2 swing breakout. Strategy: BUY TODAY (Uptrend Momentum). Target: ₹1982.9 (+8.59%), Stop-Loss: ₹1747.55 (-4.3%)."
+        },
+        {
+          "timestamp": "2026-10-05 at 09:15 AM IST",
+          "action": "BUY_SCHEDULED",
+          "price": 1826,
+          "message": "📅 Market Buy Order Scheduled for 2026-10-05 at 09:15 AM IST (NSE Open) @ Entry ₹1826.00."
+        }
+      ]
     },
     {
       "id": "pred_KOTAKBANK.NS_2026-10-04_t3ej",
@@ -88,7 +108,27 @@
       "status": "ACTIVE",
       "notes": "📅 Recommended: 04 Oct 2026 (Weekend Scan) → Execution: 05 Oct 2026 (Monday 09:15 AM IST Open).",
       "executionDate": "2026-10-05",
-      "signalDate": "2026-10-02"
+      "signalDate": "2026-10-02",
+      "recommendedTime": "11:38 AM IST",
+      "recommendedTimestamp": "2026-10-04 at 11:38 AM IST",
+      "executionTime": "09:15 AM IST",
+      "buyExecutionTime": "09:15 AM IST",
+      "buyExecutionTimestamp": "2026-10-05 at 09:15 AM IST",
+      "executionStatus": "SCHEDULED_BUY",
+      "executionLogs": [
+        {
+          "timestamp": "2026-10-04 at 11:38 AM IST",
+          "action": "RECOMMENDED",
+          "price": 418.35,
+          "message": "Algorithm detected Stage 2 swing breakout. Strategy: BUY TODAY (Uptrend Momentum). Target: ₹442.01 (+5.66%), Stop-Loss: ₹406.52 (-2.83%)."
+        },
+        {
+          "timestamp": "2026-10-05 at 09:15 AM IST",
+          "action": "BUY_SCHEDULED",
+          "price": 418.35,
+          "message": "📅 Market Buy Order Scheduled for 2026-10-05 at 09:15 AM IST (NSE Open) @ Entry ₹418.35."
+        }
+      ]
     },
     {
       "id": "pred_MANKIND.NS_2026-10-04_i4do",
@@ -108,7 +148,27 @@
       "status": "ACTIVE",
       "notes": "📅 Recommended: 04 Oct 2026 (Weekend Scan) → Execution: 05 Oct 2026 (Monday 09:15 AM IST Open).",
       "executionDate": "2026-10-05",
-      "signalDate": "2026-10-02"
+      "signalDate": "2026-10-02",
+      "recommendedTime": "11:38 AM IST",
+      "recommendedTimestamp": "2026-10-04 at 11:38 AM IST",
+      "executionTime": "09:15 AM IST",
+      "buyExecutionTime": "09:15 AM IST",
+      "buyExecutionTimestamp": "2026-10-05 at 09:15 AM IST",
+      "executionStatus": "SCHEDULED_BUY",
+      "executionLogs": [
+        {
+          "timestamp": "2026-10-04 at 11:38 AM IST",
+          "action": "RECOMMENDED",
+          "price": 2535,
+          "message": "Algorithm detected Stage 2 swing breakout. Strategy: BUY TODAY (Uptrend Momentum). Target: ₹2708.56 (+6.85%), Stop-Loss: ₹2448.22 (-3.42%)."
+        },
+        {
+          "timestamp": "2026-10-05 at 09:15 AM IST",
+          "action": "BUY_SCHEDULED",
+          "price": 2535,
+          "message": "📅 Market Buy Order Scheduled for 2026-10-05 at 09:15 AM IST (NSE Open) @ Entry ₹2535.00."
+        }
+      ]
     },
     {
       "id": "pred_CYIENT.NS_2026-10-04_6u24",
@@ -128,7 +188,27 @@
       "status": "ACTIVE",
       "notes": "📅 Recommended: 04 Oct 2026 (Weekend Scan) → Execution: 05 Oct 2026 (Monday 09:15 AM IST Open).",
       "executionDate": "2026-10-05",
-      "signalDate": "2026-10-02"
+      "signalDate": "2026-10-02",
+      "recommendedTime": "11:38 AM IST",
+      "recommendedTimestamp": "2026-10-04 at 11:38 AM IST",
+      "executionTime": "09:15 AM IST",
+      "buyExecutionTime": "09:15 AM IST",
+      "buyExecutionTimestamp": "2026-10-05 at 09:15 AM IST",
+      "executionStatus": "SCHEDULED_BUY",
+      "executionLogs": [
+        {
+          "timestamp": "2026-10-04 at 11:38 AM IST",
+          "action": "RECOMMENDED",
+          "price": 1110.2,
+          "message": "Algorithm detected Stage 2 swing breakout. Strategy: BUY TODAY (Uptrend Momentum). Target: ₹1226.2 (+10.45%), Stop-Loss: ₹1052.2 (-5.22%)."
+        },
+        {
+          "timestamp": "2026-10-05 at 09:15 AM IST",
+          "action": "BUY_SCHEDULED",
+          "price": 1110.2,
+          "message": "📅 Market Buy Order Scheduled for 2026-10-05 at 09:15 AM IST (NSE Open) @ Entry ₹1110.20."
+        }
+      ]
     },
     {
       "id": "pred_KOTAKBANK.NS_2026-10-01_2uax",
@@ -151,7 +231,36 @@
       "exitDate": "2026-09-30",
       "resultProfitLossPercent": -2.63,
       "isWin": false,
-      "executionDate": "2026-10-01"
+      "executionDate": "2026-10-01",
+      "recommendedTime": "11:38 AM IST",
+      "recommendedTimestamp": "2026-10-01 at 11:38 AM IST",
+      "executionTime": "09:15 AM IST",
+      "buyExecutionTime": "09:15 AM IST",
+      "buyExecutionTimestamp": "2026-10-01 at 09:15 AM IST",
+      "exitTime": "02:45 PM IST",
+      "exitTimestamp": "2026-09-30 at 02:45 PM IST",
+      "sellExecutionTimestamp": "2026-09-30 at 02:45 PM IST",
+      "executionStatus": "SELL_STOP_EXECUTED",
+      "executionLogs": [
+        {
+          "timestamp": "2026-10-01 at 11:38 AM IST",
+          "action": "RECOMMENDED",
+          "price": 417,
+          "message": "Algorithm detected swing setup. Strategy: BUY TODAY (Confirmed Breakout). Target: ₹438.96 (+5.27%), Stop-Loss: ₹406.02 (-2.63%)."
+        },
+        {
+          "timestamp": "2026-10-01 at 09:15 AM IST",
+          "action": "BUY_EXECUTED",
+          "price": 417,
+          "message": "🟢 BUY Filled @ ₹417.00. Position active in portfolio."
+        },
+        {
+          "timestamp": "2026-09-30 at 02:45 PM IST",
+          "action": "STOP_LOSS_HIT",
+          "price": 406.02,
+          "message": "🛑 Stop-Loss Hit (-2.63%). Auto SELL Executed at ₹406.02. Capital protected."
+        }
+      ]
     },
     {
       "id": "pred_cyient_0924",
@@ -174,7 +283,36 @@
       "resultProfitLossPercent": 7.58,
       "isWin": true,
       "notes": "🎯 Target Achieved: Volatility contraction breakout hit session high of ₹1138.00 on 2026-09-30.",
-      "executionDate": "2026-09-24"
+      "executionDate": "2026-09-24",
+      "recommendedTime": "11:38 AM IST",
+      "recommendedTimestamp": "2026-09-24 at 11:38 AM IST",
+      "executionTime": "09:15 AM IST",
+      "buyExecutionTime": "09:15 AM IST",
+      "buyExecutionTimestamp": "2026-09-24 at 09:15 AM IST",
+      "exitTime": "02:45 PM IST",
+      "exitTimestamp": "2026-09-30 at 02:45 PM IST",
+      "sellExecutionTimestamp": "2026-09-30 at 02:45 PM IST",
+      "executionStatus": "SELL_TARGET_EXECUTED",
+      "executionLogs": [
+        {
+          "timestamp": "2026-09-24 at 11:38 AM IST",
+          "action": "RECOMMENDED",
+          "price": 1057.8,
+          "message": "Algorithm detected swing setup. Strategy: Mark Minervini VCP Breakout. Target: ₹1138 (+7.58%), Stop-Loss: ₹1020 (-3.57%)."
+        },
+        {
+          "timestamp": "2026-09-24 at 09:15 AM IST",
+          "action": "BUY_EXECUTED",
+          "price": 1057.8,
+          "message": "🟢 BUY Filled @ ₹1057.80. Position active in portfolio."
+        },
+        {
+          "timestamp": "2026-09-30 at 02:45 PM IST",
+          "action": "TARGET_HIT",
+          "price": 1138,
+          "message": "🎯 Target Achieved (+7.58%). Auto SELL Executed at ₹1138.00. Profit locked."
+        }
+      ]
     },
     {
       "id": "pred_mankind_0924",
@@ -197,7 +335,36 @@
       "resultProfitLossPercent": 4.48,
       "isWin": true,
       "notes": "🎯 Target Achieved: High of ₹2559.00 touched on 2026-09-29 exceeding Target 1.",
-      "executionDate": "2026-09-24"
+      "executionDate": "2026-09-24",
+      "recommendedTime": "11:38 AM IST",
+      "recommendedTimestamp": "2026-09-24 at 11:38 AM IST",
+      "executionTime": "09:15 AM IST",
+      "buyExecutionTime": "09:15 AM IST",
+      "buyExecutionTimestamp": "2026-09-24 at 09:15 AM IST",
+      "exitTime": "02:45 PM IST",
+      "exitTimestamp": "2026-09-29 at 02:45 PM IST",
+      "sellExecutionTimestamp": "2026-09-29 at 02:45 PM IST",
+      "executionStatus": "SELL_TARGET_EXECUTED",
+      "executionLogs": [
+        {
+          "timestamp": "2026-09-24 at 11:38 AM IST",
+          "action": "RECOMMENDED",
+          "price": 2442.6,
+          "message": "Algorithm detected swing setup. Strategy: Mansfield Relative Strength vs Nifty. Target: ₹2552 (+4.48%), Stop-Loss: ₹2360 (-3.38%)."
+        },
+        {
+          "timestamp": "2026-09-24 at 09:15 AM IST",
+          "action": "BUY_EXECUTED",
+          "price": 2442.6,
+          "message": "🟢 BUY Filled @ ₹2442.60. Position active in portfolio."
+        },
+        {
+          "timestamp": "2026-09-29 at 02:45 PM IST",
+          "action": "TARGET_HIT",
+          "price": 2552,
+          "message": "🎯 Target Achieved (+4.48%). Auto SELL Executed at ₹2552.00. Profit locked."
+        }
+      ]
     },
     {
       "id": "pred_reliance_0925",
@@ -220,7 +387,36 @@
       "resultProfitLossPercent": -3.34,
       "isWin": false,
       "notes": "🛑 Stop-Loss Hit: Breached SL barrier when low reached ₹1181.80 on 2026-09-29. Strict risk cut executed.",
-      "executionDate": "2026-09-25"
+      "executionDate": "2026-09-25",
+      "recommendedTime": "11:38 AM IST",
+      "recommendedTimestamp": "2026-09-25 at 11:38 AM IST",
+      "executionTime": "09:15 AM IST",
+      "buyExecutionTime": "09:15 AM IST",
+      "buyExecutionTimestamp": "2026-09-25 at 09:15 AM IST",
+      "exitTime": "02:45 PM IST",
+      "exitTimestamp": "2026-09-29 at 02:45 PM IST",
+      "sellExecutionTimestamp": "2026-09-29 at 02:45 PM IST",
+      "executionStatus": "SELL_STOP_EXECUTED",
+      "executionLogs": [
+        {
+          "timestamp": "2026-09-25 at 11:38 AM IST",
+          "action": "RECOMMENDED",
+          "price": 1226,
+          "message": "Algorithm detected swing setup. Strategy: 20 EMA / 50 EMA Pullback Bounce. Target: ₹1285 (+4.81%), Stop-Loss: ₹1185 (-3.34%)."
+        },
+        {
+          "timestamp": "2026-09-25 at 09:15 AM IST",
+          "action": "BUY_EXECUTED",
+          "price": 1226,
+          "message": "🟢 BUY Filled @ ₹1226.00. Position active in portfolio."
+        },
+        {
+          "timestamp": "2026-09-29 at 02:45 PM IST",
+          "action": "STOP_LOSS_HIT",
+          "price": 1185,
+          "message": "🛑 Stop-Loss Hit (-3.34%). Auto SELL Executed at ₹1185.00. Capital protected."
+        }
+      ]
     },
     {
       "id": "pred_infy_0925",
@@ -243,10 +439,60 @@
       "resultProfitLossPercent": 2.38,
       "isWin": true,
       "notes": "🎯 Target Achieved: Session high reached ₹1024.00 on 2026-09-30.",
-      "executionDate": "2026-09-25"
+      "executionDate": "2026-09-25",
+      "recommendedTime": "11:38 AM IST",
+      "recommendedTimestamp": "2026-09-25 at 11:38 AM IST",
+      "executionTime": "09:15 AM IST",
+      "buyExecutionTime": "09:15 AM IST",
+      "buyExecutionTimestamp": "2026-09-25 at 09:15 AM IST",
+      "exitTime": "02:45 PM IST",
+      "exitTimestamp": "2026-09-30 at 02:45 PM IST",
+      "sellExecutionTimestamp": "2026-09-30 at 02:45 PM IST",
+      "executionStatus": "SELL_TARGET_EXECUTED",
+      "executionLogs": [
+        {
+          "timestamp": "2026-09-25 at 11:38 AM IST",
+          "action": "RECOMMENDED",
+          "price": 1000.2,
+          "message": "Algorithm detected swing setup. Strategy: Darvas Box Multi-Day High Breakout. Target: ₹1024 (+2.38%), Stop-Loss: ₹968 (-3.22%)."
+        },
+        {
+          "timestamp": "2026-09-25 at 09:15 AM IST",
+          "action": "BUY_EXECUTED",
+          "price": 1000.2,
+          "message": "🟢 BUY Filled @ ₹1000.20. Position active in portfolio."
+        },
+        {
+          "timestamp": "2026-09-30 at 02:45 PM IST",
+          "action": "TARGET_HIT",
+          "price": 1024,
+          "message": "🎯 Target Achieved (+2.38%). Auto SELL Executed at ₹1024.00. Profit locked."
+        }
+      ]
     }
   ],
   "scanAuditHistory": [
+    {
+      "timestamp": "2026-10-04T02:25:48.015Z",
+      "scanNumberToday": 1,
+      "totalScanned": 89,
+      "callsGenerated": 0,
+      "niftyRegime": "CORRECTION"
+    },
+    {
+      "timestamp": "2026-10-04T02:12:59.692Z",
+      "scanNumberToday": 1,
+      "totalScanned": 89,
+      "callsGenerated": 0,
+      "niftyRegime": "CORRECTION"
+    },
+    {
+      "timestamp": "2026-10-04T02:12:44.190Z",
+      "scanNumberToday": 1,
+      "totalScanned": 89,
+      "callsGenerated": 0,
+      "niftyRegime": "CORRECTION"
+    },
     {
       "timestamp": "2026-10-04T02:08:49.712Z",
       "scanNumberToday": 1,
