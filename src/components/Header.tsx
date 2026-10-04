@@ -14,7 +14,8 @@ import {
   Table,
   Database,
   LineChart,
-  Bot
+  Bot,
+  Radio
 } from 'lucide-react';
 import { MarketSummaryItem, StockMeta } from '../types/market';
 
@@ -27,6 +28,7 @@ interface HeaderProps {
   onRefresh: () => void;
   onOpenDirectory: () => void;
   onOpenAddStockModal: () => void;
+  onOpenUptimeRobot: () => void;
   autoRefresh: boolean;
   onToggleAutoRefresh: () => void;
   lastUpdatedTime: string;
@@ -43,6 +45,7 @@ export const Header: React.FC<HeaderProps> = ({
   onRefresh,
   onOpenDirectory,
   onOpenAddStockModal,
+  onOpenUptimeRobot,
   autoRefresh,
   onToggleAutoRefresh,
   lastUpdatedTime,
@@ -266,6 +269,16 @@ export const Header: React.FC<HeaderProps> = ({
             className="p-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white rounded-lg transition-colors shrink-0 disabled:opacity-50"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin text-indigo-400' : ''}`} />
+          </button>
+
+          {/* UptimeRobot 24/7 Command Center Button */}
+          <button
+            onClick={onOpenUptimeRobot}
+            title="Configure UptimeRobot 24/7 Heartbeat (Zero Cloud Sleep)"
+            className="flex items-center gap-1.5 px-2.5 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/60 text-slate-200 rounded-lg text-xs font-medium transition-colors shrink-0 group shadow-sm"
+          >
+            <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse group-hover:scale-110 transition-transform" />
+            <span className="hidden sm:inline font-semibold text-emerald-300">24/7 Uptime</span>
           </button>
         </div>
       </div>

@@ -34,6 +34,7 @@ import { AddStockModal } from './components/AddStockModal';
 import { SwingTradeTab } from './components/SwingTradeTab';
 import { AutoStrategyPaperTraderView } from './components/AutoStrategyPaperTraderView';
 import { NseDataLakeView } from './components/NseDataLakeView';
+import { UptimeRobotModal } from './components/UptimeRobotModal';
 import { StockMeta, StockPayload, MarketSummaryItem } from './types/market';
 
 const DEFAULT_WATCHLIST = ['RELIANCE.NS', 'TCS.NS', 'HDFCBANK.NS', 'INFY.NS', 'TATAMOTORS.NS'];
@@ -49,6 +50,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'table' | 'chart' | 'swing' | 'performance' | 'python' | 'compare'>('table');
   const [isDirectoryOpen, setIsDirectoryOpen] = useState<boolean>(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const [isUptimeModalOpen, setIsUptimeModalOpen] = useState<boolean>(false);
   const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
   const [lastUpdatedTime, setLastUpdatedTime] = useState<string>('');
 
@@ -192,6 +194,7 @@ export default function App() {
         onRefresh={() => fetchStockHistory(currentSymbol, true, false)}
         onOpenDirectory={() => setIsDirectoryOpen(true)}
         onOpenAddStockModal={() => setIsAddModalOpen(true)}
+        onOpenUptimeRobot={() => setIsUptimeModalOpen(true)}
         autoRefresh={autoRefresh}
         onToggleAutoRefresh={() => setAutoRefresh(prev => !prev)}
         lastUpdatedTime={lastUpdatedTime}
@@ -509,6 +512,12 @@ export default function App() {
         onClose={() => setIsAddModalOpen(false)}
         onStockAdded={handleStockAdded}
         existingStocks={availableStocks}
+      />
+
+      {/* UptimeRobot 24/7 Command Center Modal */}
+      <UptimeRobotModal
+        isOpen={isUptimeModalOpen}
+        onClose={() => setIsUptimeModalOpen(false)}
       />
 
       {/* Footer */}

@@ -407,6 +407,152 @@ async function fetchYahooData(symbol: string, range: string = '1y', interval: st
   return payload;
 }
 
+// 0. UPTIMEROBOT & 24/7 HEARTBEAT ENGINE
+interface HeartbeatLog {
+  id: string;
+  timestamp: string;
+  source: string;
+  userAgent: string;
+  ip: string;
+  responseTimeMs: number;
+}
+
+const serverStartTime = Date.now();
+const uptimeMetrics = {
+  bootTime: new Date(serverStartTime).toISOString(),
+  totalHeartbeats: 0,
+  lastHeartbeatTime: null as string | null,
+  lastHeartbeatUserAgent: null as string | null,
+  lastHeartbeatIp: null as string | null,
+  recentLogs: [] as HeartbeatLog[],
+};
+
+function formatUptime(seconds: number): string {
+  const d = Math.floor(seconds / (3600 * 24));
+  const h = Math.floor((seconds % (3600 * 24)) / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  const parts: string[] = [];
+  if (d > 0) parts.push(`${d}d`);
+  if (h > 0) parts.push(`${h}h`);
+  if (m > 0) parts.push(`${m}m`);
+  parts.push(`${s}s`);
+  return parts.join(' ');
+}
+
+// Handler for UptimeRobot Health / Heartbeat ping
+const handleHealthCheck = (req: Request, res: Response) => {
+  const start = Date.now();
+  uptimeMetrics.totalHeartbeats++;
+  const nowIso = new Date().toISOString();
+  uptimeMetrics.lastHeartbeatTime = nowIso;
+  const userAgent = (req.headers['user-agent'] as string) || 'Direct Ping';
+  const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0] || req.socket.remoteAddress || '127.0.0.1';
+  uptimeMetrics.lastHeartbeatUserAgent = userAgent;
+  uptimeMetrics.lastHeartbeatIp = ip;
+
+  const duration = Date.now() - start;
+  uptimeMetrics.recentLogs.unshift({
+    id: `hb_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+    timestamp: nowIso,
+    source: userAgent.includes('UptimeRobot') ? 'UptimeRobot/2.0' : userAgent.substring(0, 35),
+    userAgent,
+    ip,
+    responseTimeMs: Math.max(1, duration),
+  });
+  if (uptimeMetrics.recentLogs.length > 30) {
+    uptimeMetrics.recentLogs.pop();
+  }
+
+  const uptimeSec = Math.floor((Date.now() - serverStartTime) / 1000);
+  const trades = db.getState()?.trades || [];
+  const predictions = db.getState()?.predictions || [];
+
+  res.status(200).json({
+    status: 'healthy',
+    operational: true,
+    server: 'FinFox 24/7 Swing Terminal Engine',
+    uptimeSeconds: uptimeSec,
+    uptimeFormatted: formatUptime(uptimeSec),
+    bootTime: uptimeMetrics.bootTime,
+    timestamp: nowIso,
+    totalHeartbeatsReceived: uptimeMetrics.totalHeartbeats,
+    system: {
+      database: 'connected',
+      activePositionsCount: trades.filter((t: any) => t.status === 'OPEN').length,
+      activePredictionsCount: predictions.filter((p: any) => p.status === 'ACTIVE').length,
+      dataLakeStocksCount: dataLake.getOverview().totalRecords,
+      memoryUsageMB: Math.round(process.memoryUsage().rss / 1024 / 1024),
+    },
+    clientInfo: {
+      ip,
+      userAgent,
+    }
+  });
+};
+
+// Standard UptimeRobot endpoints
+app.all('/api/health', handleHealthCheck);
+app.all('/api/heartbeat', handleHealthCheck);
+app.all('/api/uptimerobot', handleHealthCheck);
+
+// Metrics endpoint for Frontend Dashboard
+app.get('/api/uptime/metrics', (_req: Request, res: Response) => {
+  const uptimeSec = Math.floor((Date.now() - serverStartTime) / 1000);
+  const trades = db.getState()?.trades || [];
+  const predictions = db.getState()?.predictions || [];
+
+  res.json({
+    success: true,
+    status: 'healthy',
+    operational: true,
+    uptimeSeconds: uptimeSec,
+    uptimeFormatted: formatUptime(uptimeSec),
+    bootTime: uptimeMetrics.bootTime,
+    totalHeartbeats: uptimeMetrics.totalHeartbeats,
+    lastHeartbeatTime: uptimeMetrics.lastHeartbeatTime,
+    lastHeartbeatUserAgent: uptimeMetrics.lastHeartbeatUserAgent,
+    lastHeartbeatIp: uptimeMetrics.lastHeartbeatIp,
+    recentLogs: uptimeMetrics.recentLogs,
+    activePositionsCount: trades.filter((t: any) => t.status === 'OPEN').length,
+    activePredictionsCount: predictions.filter((p: any) => p.status === 'ACTIVE').length,
+  });
+});
+
+// Interactive Test Ping endpoint (Simulates UptimeRobot directly from UI)
+app.post('/api/uptime/test-ping', (req: Request, res: Response) => {
+  uptimeMetrics.totalHeartbeats++;
+  const nowIso = new Date().toISOString();
+  uptimeMetrics.lastHeartbeatTime = nowIso;
+  const userAgent = (req.headers['user-agent'] as string) || 'Simulated Test Ping';
+  const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0] || req.socket.remoteAddress || '127.0.0.1';
+  uptimeMetrics.lastHeartbeatUserAgent = 'Manual Test Ping from Dashboard';
+  uptimeMetrics.lastHeartbeatIp = ip;
+
+  uptimeMetrics.recentLogs.unshift({
+    id: `hb_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+    timestamp: nowIso,
+    source: 'Dashboard Test Ping (Manual)',
+    userAgent,
+    ip,
+    responseTimeMs: 8,
+  });
+  if (uptimeMetrics.recentLogs.length > 30) {
+    uptimeMetrics.recentLogs.pop();
+  }
+
+  const uptimeSec = Math.floor((Date.now() - serverStartTime) / 1000);
+  res.json({
+    success: true,
+    message: 'Test heartbeat acknowledged. Server is 100% active and running 24/7.',
+    statusCode: 200,
+    responseTimeMs: 8,
+    uptimeSeconds: uptimeSec,
+    uptimeFormatted: formatUptime(uptimeSec),
+    timestamp: nowIso,
+  });
+});
+
 // 1. API: List Available Curated NSE Stocks & Indices
 app.get('/api/stocks', (_req: Request, res: Response) => {
   res.json({ stocks: NSE_STOCKS });
